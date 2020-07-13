@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ItemMaster extends Model
+class Segment extends Model
 {
-    protected $table = 'Master_Items';
+    protected $table = 'Segment';
     protected $connection = 'mysql_stock';
     public $timestamps = false;
 }

@@ -17,8 +17,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// API LOGIN DENGAN HIRARKY
 Route::post('/login/user/','UserController@login');
-Route::get('/user','UserController@user');
-
-Route::get('/stock/','StockController@index');
 Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
+
+//API STOCK
+Route::get('/stock/mobile/','StockController@apiStockMobile');
+
+//API FORM REQUESTS
+Route::post('/form/req','ReqController@store');
+
+//API GOOD REQUESTS FORM
+Route::post('/goodReq/','GoodreqController@store');
+
+//API Ondelivery
+Route::post('/ondelivery','OndeliveryController@store');
