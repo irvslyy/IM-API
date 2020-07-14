@@ -13,10 +13,9 @@ class StockController extends Controller
     public function Stock()
     {
        $stock = Stock::all();
-       return response()->json([
-        'status' => 200,
-        'data' => $stock
-       ]);
+       
+       return response()->json(['success' => $user], $this->successStatus);
+
     }
     public function StockApi(Request $req)
     {
