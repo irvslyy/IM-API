@@ -32,3 +32,6 @@ Route::post('/goodReq/','GoodreqController@store');
 
 //API Ondelivery
 Route::post('/ondelivery','OndeliveryController@store');
+
+//API SEGMENT
+Route::get('/segment/','SegmentController@index');

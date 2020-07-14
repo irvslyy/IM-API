@@ -10,10 +10,11 @@ class GoodreqController extends Controller
     public function store(Request $req)
     {
         $Goodreq = new Goodreq;
-        // $config =['table' => 'Grf','field'=>'grf_number', 'length' => 6, 'prefix' =>date('P')];
-        // $id = IdGenerator::generate($config);
+        $wh = 'JKT';
+        $config = ['table' => 'Grf','field'=> 'grf_number', 'length' => 6, 'prefix' => $wh.'-'];
+        $id = IdGenerator::generate($config);
 
-        $Goodreq->grf_number = 1;
+        $Goodreq->grf_number = $id;
         $Goodreq->heir_code = $req->heir_code;
         $Goodreq->employee_number = $req->employee_number;
         $Goodreq->access_code = $req->access_code;

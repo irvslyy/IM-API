@@ -9,7 +9,7 @@ class ReqController extends Controller
     public function store(Request $req)
     {
         $requ  = new Req;
-        $requ->request_code = $req->request_code;
+        $requ->request_code = 'Req'.'-'.mt_rand(1000,20000);
         $requ->request_list = $req->request_list;
         $requ->stock_code = $req->stock_code;
         $requ->items_code = $req->items_code;

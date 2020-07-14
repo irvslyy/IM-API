@@ -5,6 +5,7 @@ use App\Stock;
 use App\Segment;
 use App\ItemMaster;
 use App\Items;
+use DB;
 use Illuminate\Http\Request;
 
 class StockController extends Controller
@@ -57,7 +58,10 @@ class StockController extends Controller
         $item = ItemMaster::all();
         for ($i = 0; $i < count($item); $i++) {
             $item[$i]->data = Items::where('product_name', $item[$i]->product_name)->first();
+            // $item[$i]->data =  Items::where('product_name', $item[$i]->product_name)
+            // ->join('Stock','Items.items_code','=','Stock.items_code')->first();
         }
+
         return ["data" => $item];
     }
 }
