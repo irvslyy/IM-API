@@ -36,6 +36,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     //API SEGMENT
     Route::get('/segment/','SegmentController@index');
 
-    Route::get('/user/','UserController@getUser');
+
 
 
