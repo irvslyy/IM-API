@@ -13,7 +13,6 @@ class UserController extends Controller
     public function login(Request $request){
         if(Auth::attempt($request->only('email','password'))){
           $user = Auth::user();
-          $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
           $loop = 1;
           $user_id = Auth::user()->id;
@@ -36,7 +35,6 @@ class UserController extends Controller
               return response()->json([ 
                 'status' => 200,
                 'data' => $user,
-                'access token' => $accessToken,
                 'hirarki' => $heirarky_return
               ]);
 

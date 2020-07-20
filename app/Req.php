@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Req extends Model
 {
-    protected $connection = 'mysql_logistic';
+    protected $connection = 'mysql_mplay_logistic';
 
     protected $table = 'Request';
     protected $fillable = [        
