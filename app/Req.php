@@ -21,4 +21,8 @@ class Req extends Model
         'qty',
         'status',
     ];
+    public function goodreq()
+    {
+        return $this->belongsTo('App\GoodReq','id');
+    }
 }
