@@ -17,25 +17,25 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-    // API LOGIN DENGAN HIRARKY
-    Route::post('/login/user/','UserController@login');
-    Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
+// API LOGIN DENGAN HIRARKY
+Route::post('/login/user/', 'UserController@login');
+Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
 
-    //API STOCK
-    Route::get('/stock/mobile/','StockController@apiStockMobile');
+//API STOCK
+Route::get('/stock/mobile/', 'StockController@apiStockMobile');
 
-    //API FORM REQUESTS
-    Route::post('/form/req','ReqController@store');
+//API FORM REQUESTS
+Route::post('/form/req', 'ReqController@store');
 
-    //API GOOD REQUESTS FORM
-    Route::post('/goodReq/','GoodreqController@store');
+//API GOOD REQUESTS FORM
+Route::post('/goodReq/', 'GoodreqController@store');
 
-    //API Ondelivery
-    Route::post('/ondelivery','OndeliveryController@store');
+//API Ondelivery
+Route::post('/ondelivery', 'OndeliveryController@store');
 
-    //API SEGMENT
-    Route::get('/segment/','SegmentController@index');
-
-
+//API SEGMENT
+Route::get('/segment/', 'SegmentController@index');
 
 
+//API SEGMENT
+Route::get('/wh/{regional}', 'WarehouseController@ApiWarehouse');
