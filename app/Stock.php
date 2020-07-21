@@ -10,4 +10,12 @@ class Stock extends Model
     protected $table = 'Stock';
     protected $connection = 'mysql_stock';
     public $timestamps = false;
+
+    public function item()
+    {
+        return $this->belongsTo('App\Items', 'items_code');
+    }
+
 }
+  
+
