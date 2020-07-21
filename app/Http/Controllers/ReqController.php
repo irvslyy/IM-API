@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Req;
 use Str;
 use Webpatser\Uuid\Uuid;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\Request;
 
 class ReqController extends Controller
@@ -19,8 +20,9 @@ class ReqController extends Controller
         $requ->product_code = $req->product_code;
         $requ->product_name = $req->product_name;
         $str = Str::random(80);
-        $uui = Uuid::generate();
-        $requ->api_tokens = hash('sha256',$str); 
+        $uuid = Uuid::generate();
+        $encrypt = Crypt::encryptString($uuid);
+        $requ->api_tokens = hash('sha256',$encrypt); 
         $requ->qty = $req->qty;
         $requ->status = 'pending';
         $requ->save();

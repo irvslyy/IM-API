@@ -63,7 +63,7 @@ return [
             ]) : [],
         ],
 
-        'mysql_stock' => [
+        'mysql_mplay_stock' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -123,7 +123,7 @@ return [
             ]) : [],
         ],
         
-        'mysql_heirarky' => [
+        'mysql_mplay_heirarky' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
