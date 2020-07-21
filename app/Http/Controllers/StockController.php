@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Stock;
 use App\Segment;
 use App\ItemMaster;
@@ -12,10 +13,11 @@ class StockController extends Controller
 {
     public function Stock()
     {
-       $stock = Stock::all();
-       
-       return response()->json(['success' => $user], $this->successStatus);
-
+        $stock = Stock::all();
+        return response()->json([
+            'status' => 200,
+            'data' => $stock
+        ]);
     }
     public function StockApi(Request $req)
     {
@@ -33,12 +35,15 @@ class StockController extends Controller
                     $qty_2 = 0;
                     if (count($item) != 0) {
                         for ($l = 0; $l <  count($item); $l++) {
-                            $stock = Stock::where('items_code', $item[$l]->id)->count();
+                            $stock = Stock::where('items_code', $item[$l]->id)->where('wh_code', $req->wh_code)->count();
+                            $stock_data = Stock::where('items_code', $item[$l]->id)->first();
                             $qty_2 = $stock + $qty_2;
                         }
                         $segment[$i]->item = $masterItem;
                         $qty = $qty_2 + $qty;
+                        // 
                         $masterItem[$j]->qty = $qty_2;
+                        $masterItem[$j]->info = $stock_data->item;
                     } else {
                         $segment[$i]->item = [];
                         $masterItem[$j]->qty = 0;
@@ -60,6 +65,7 @@ class StockController extends Controller
             // $item[$i]->data =  Items::where('product_name', $item[$i]->product_name)
             // ->join('Stock','Items.items_code','=','Stock.items_code')->first();
         }
+        // dd("asdasd");s
 
         return ["data" => $item];
     }

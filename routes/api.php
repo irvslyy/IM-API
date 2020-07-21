@@ -23,6 +23,7 @@ Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
 
 //API STOCK
 Route::get('/stock/mobile/', 'StockController@apiStockMobile');
+Route::get('/stock', 'StockController@StockApi');
 
 //API FORM REQUESTS
 Route::post('/form/req', 'ReqController@store');
