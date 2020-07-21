@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Model
 {
-    // use Notifiable, HasApiTokens; 
+   
 
     protected $table = 'Stock';
     protected $connection = 'mysql_stock';
