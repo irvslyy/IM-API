@@ -103,12 +103,12 @@ return [
             ]) : [],
         ],
 
-        'mysql_logistic' => [
+        'mysql_mplay_logistic' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE_LOGISTIC', 'forge'),
+            'database' => env('DB_DATABASE_LOGISTIC', 'IM-MPLAY-LOGISTIC'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
