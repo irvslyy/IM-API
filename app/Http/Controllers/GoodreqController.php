@@ -7,14 +7,20 @@ use Illuminate\Http\Request;
 
 class GoodreqController extends Controller
 {
+
+    public function GRF($emp)
+    {
+        $Goodreq = Goodreq::where('employee_number','=',$emp)->get();
+        return response()->json([
+            'status' => 200,
+            'data' => $Goodreq
+        ]);
+    }
+
     public function store(Request $req)
     {
         $Goodreq = new Goodreq;
-        $wh = 'JKT';
-        $config = ['table' => 'Grf','field'=> 'grf_number', 'length' => 6, 'prefix' => $wh.'-'];
-        $id = IdGenerator::generate($config);
-
-        $Goodreq->grf_number = $id;
+        $Goodreq->grf_number = $req->grf_number;
         $Goodreq->heir_code = $req->heir_code;
         $Goodreq->employee_number = $req->employee_number;
         $Goodreq->access_code = $req->access_code;
