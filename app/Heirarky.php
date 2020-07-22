@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Heirarky extends Model
 {
     protected $table = 'Heirarky';
-    protected $connection = 'mysql_heirarky';
+    protected $connection = 'mysql_mplay_heirarky';
     public $timestamps = false;
 
 

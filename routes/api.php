@@ -29,6 +29,7 @@ Route::get('/stock', 'StockController@StockApi');
 Route::post('/form/req', 'ReqController@store');
 
 //API GOOD REQUESTS FORM
+Route::get('/goodreq/employee/{emp}','GoodreqController@GRF');
 Route::post('/goodReq/', 'GoodreqController@store');
 
 //API Ondelivery
