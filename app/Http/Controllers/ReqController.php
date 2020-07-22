@@ -9,6 +9,22 @@ use Illuminate\Http\Request;
 
 class ReqController extends Controller
 {
+    public function apiGetReqTl($id)
+    {
+        $requ  =  Req::where('TL', $id)->get();
+        return ['status' => 200, "data" => $requ];
+    }
+    public function apiGetReqSPV($id)
+    {
+        $requ  =  Req::where('SPV', $id)->get();
+        return ['status' => 200, "data" => $requ];
+    }
+
+    public function apiGetReqMNG($id)
+    {
+        $requ  =  Req::where('MNG', $id)->get();
+        return ['status' => 200, "data" => $requ];
+    }
     public function store(Request $req)
     {
         $requ  = new Req;
