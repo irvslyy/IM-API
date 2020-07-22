@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Model
@@ -15,7 +16,4 @@ class Stock extends Model
     {
         return $this->belongsTo('App\Items', 'items_code');
     }
-
 }
-  
-
