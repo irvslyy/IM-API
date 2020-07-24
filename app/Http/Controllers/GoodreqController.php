@@ -77,11 +77,6 @@ class GoodreqController extends Controller
     public function apiGrfUpdateMNGSTATUS(Request $req,$id)
     {
         $requ = Goodreq::where('id',$id)->first();
-        try {
-            $requ = Goodreq::where('id',$id)->first();
-        } catch (\Throwable $th) {
-            throw $th;
-        }
         $requ->MNG_STATUS = $req->MNG_STATUS;
         $requ->save();
 
