@@ -55,4 +55,3 @@ Route::get('/wh/{regional}', 'WarehouseController@ApiWarehouse');
 Route::get('/approve/tl/{id}', 'ReqController@apiGetReqTl');
 Route::get('/approve/spv/{id}', 'ReqController@apiGetReqSPV');
 Route::get('/approve/mng/{id}', 'ReqController@apiGetReqMNG');
-

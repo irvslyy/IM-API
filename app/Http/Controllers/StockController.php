@@ -65,7 +65,6 @@ class StockController extends Controller
             // $item[$i]->data =  Items::where('product_name', $item[$i]->product_name)
             // ->join('Stock','Items.items_code','=','Stock.items_code')->first();
         }
-        // dd("asdasd");s
 
         return ["data" => $item];
     }
