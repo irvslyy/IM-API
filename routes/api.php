@@ -17,8 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-
 // API LOGIN DENGAN HIRARKY
 Route::post('/login/user/', 'UserController@login');
 Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
@@ -40,9 +38,9 @@ Route::get('/goodreq/employee/{emp}','GoodreqController@GRF');
 Route::post('/goodReq/', 'GoodreqController@store');
 Route::post('/goodReq/update/{id}','GoodreqController@grfUpdate');
 // Api update status TL,SPV,MNG
+Route::post('/grf/status/tl/{id}','GoodreqController@apiGrfUpdateSPVSTATUS');
 Route::post('/grf/status/spv/{id}','GoodreqController@apiGrfUpdateSPVSTATUS');
 Route::post('/grf/status/mng/{id}','GoodreqController@apiGrfUpdateMNGSTATUS');
-
 
 
 //API Ondelivery
@@ -57,3 +55,4 @@ Route::get('/wh/{regional}', 'WarehouseController@ApiWarehouse');
 Route::get('/approve/tl/{id}', 'ReqController@apiGetReqTl');
 Route::get('/approve/spv/{id}', 'ReqController@apiGetReqSPV');
 Route::get('/approve/mng/{id}', 'ReqController@apiGetReqMNG');
+

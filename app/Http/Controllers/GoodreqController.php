@@ -65,6 +65,16 @@ class GoodreqController extends Controller
             'data' => $Goodreq
         ]);
     }
+
+    public function apiGrfUpdateTLSTATUS(Request $req,$id)
+    {
+        $requ = Goodreq::where('id',$id)->first();
+        $requ->TL_STATUS = $req->TL_STATUS;
+        $requ->save();
+
+        return ['status' => 200, "data" => $requ];
+    }
+
     public function apiGrfUpdateSPVSTATUS(Request $req,$id)
     {
         $requ = Goodreq::where('id',$id)->first();

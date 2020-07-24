@@ -65,6 +65,15 @@ class ReqController extends Controller
      * 
      * 
     */
+    public function apiUpdateTLSTATUS(Request $req,$id)
+    {
+        $requ = Req::where('id',$id)->first();
+        $requ->TL_STATUS = $req->TL_STATUS;
+        $requ->save();
+
+        return ['status' => 200, "data" => $requ];
+    }
+
     public function apiUpdateSPVSTATUS(Request $req,$id)
     {
         $requ = Req::where('id',$id)->first();
