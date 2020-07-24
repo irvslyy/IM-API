@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class ReqController extends Controller
 {
+    /**
+     * 
+     * DISINI KODINGAN UNTUK 
+     * MENDAPATKAN TL,SPV,MNG
+     * 
+    */
     public function apiGetReqTl($id)
     {
         $requ  =  Req::where('TL', $id)->get();
@@ -20,12 +26,18 @@ class ReqController extends Controller
         $requ  =  Req::where('SPV', $id)->get();
         return ['status' => 200, "data" => $requ];
     }
-
     public function apiGetReqMNG($id)
     {
         $requ  =  Req::where('MNG', $id)->get();
         return ['status' => 200, "data" => $requ];
     }
+
+    /**
+     * 
+     * DISINI KODINGAN STORE DATA REQUESTS
+     * 
+     * 
+    */
     public function store(Request $req)
     {
         $requ  = new Req;
@@ -43,11 +55,32 @@ class ReqController extends Controller
         $requ->status = 'pending';
         $requ->save();
 
-        if ($requ) {
-            return response()->json([
-                'status' => 200,
-                'data' => $requ
-            ]);
-        }
+        return ['status' => 200, "data" => $requ];
     }
+    
+
+    /**
+     * DISINI KODINGAN UPDATE STATUS APPROVAL 
+     * DARI SPV SAMPAI MNG BAGIAN REQUESTS
+     * 
+     * 
+    */
+    public function apiUpdateSPVSTATUS(Request $req,$id)
+    {
+        $requ = Req::where('id',$id)->first();
+        $requ->SPV_STATUS = $req->SPV_STATUS;
+        $requ->save();
+
+        return ['status' => 200, "data" => $requ];
+    }
+
+    public function apiUpdateMNGSTATUS(Request $req,$id)
+    {
+        $requ = Req::where('id',$id)->first();
+        $requ->MNG_STATUS = $req->MNG_STATUS;
+        $requ->save();
+
+        return ['status' => 200, "data" => $requ];
+    }
+
 }

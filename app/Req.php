@@ -20,6 +20,12 @@ class Req extends Model
         'product_name',
         'qty',
         'status',
+        'TL',
+        'SPV',
+        'MNG',
+        'TL_STATUS',
+        'SPV_STATUS',
+        'MNG_STATUS'
     ];
     public function goodreq()
     {
