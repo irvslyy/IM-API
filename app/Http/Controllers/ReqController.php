@@ -19,14 +19,35 @@ class ReqController extends Controller
     /**
      * 
      * DISINI KODINGAN UNTUK 
-     * USAGE BALANCE
+     * USAGE BALANCE INLINE CLOSURE
      * 
     */
     public function masterItems($product)
     {
         $reqs = Req::where('product_code',$product)->sum('qty');
-        $product_name = Req::where('product_code',$product)->select('product_code','product_name')->groupBy('product_code','product_name')->first();
         $products = ItemMaster::where('product_code',$product)->select('product_code','product_name')->groupBy('product_code','product_name')->first();
+        $product = ItemMaster::where('product_code',$product)->count();
+        $q = $product - $reqs;
+
+        return [
+            'item' => $products,
+            'terpakai' => $reqs,
+            'sisa' => $q,
+            'total' => $reqs + $q,
+        ];
+    }
+
+    /**
+     * 
+     * DISINI KODINGAN UNTUK 
+     * USAGE BALANCE OTB
+     * 
+    */
+    public function masterItemsOtb($product)
+    {
+        $reqs = Req::where('product_code',$product)->sum('qty');
+        $product_name = Req::where('product_code',$product)->select('product_code','product_name')->groupBy('product_code','product_name')->first();
+        $products = ItemMaster::where('product_code',$product)->select('product_code','product_name','segment_code')->groupBy('product_code','product_name','segment_code')->first();
         $product = ItemMaster::where('product_code',$product)->count();
         $q = $product - $reqs;
 
@@ -123,6 +144,26 @@ class ReqController extends Controller
         $requester_data = Req::where('request_code',$code)->get();
 
         return ['status' => 200, "data" => $requester_data];
+    }
+
+     /**
+     * DISINI KODINGAN UPDATE STATUS APPROVAL 
+     * ADMIN IM YANG DI WEB
+     * 
+     * 
+    */
+    public function apiUpdateADMINSTATUS(Request $request,$code)
+    {
+        $requester = Req::where('request_code',$code)->update(['ADMIN_STATUS' => $request->ADMIN_STATUS]);
+        $requester_data = Req::where('request_code',$code)->get();
+
+        return ['status' => 200, "data" => $requester_data];
+    }
+
+    public function mngStatusReq()
+    {
+        $requester = Req::where('MNG_STATUS','=','approve')->get();
+        return ['status' => 200, "data" => $requester];
     }
 }
 

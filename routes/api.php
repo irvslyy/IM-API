@@ -29,21 +29,24 @@ Route::get('/stock', 'StockController@StockApi');
 //API FORM REQUESTS
 Route::post('/form/req', 'ReqController@store');
 
-// Api update status TL,SPV,MNG
+// Api update status approval TL,SPV,MNG,ADMIN
 Route::post('/request/status/tl/{code}','ReqController@apiUpdateTLSTATUS');
 Route::post('/request/status/spv/{code}','ReqController@apiUpdateSPVSTATUS');
 Route::post('/request/status/mng/{code}','ReqController@apiUpdateMNGSTATUS');
+Route::post('/request/status/admin/{code}','ReqController@apiUpdateADMINSTATUS');
+Route::get('/request/approval/list','ReqController@mngStatusReq');
 
 //API GOOD REQUESTS FORM
 Route::get('/goodreq/employee/{emp}','GoodreqController@GRF');
 Route::post('/goodReq/', 'GoodreqController@store');
 Route::post('/goodReq/update/{id}','GoodreqController@grfUpdate');
 
-// Api update status TL,SPV,MNG
+// Api update status approval TL,SPV,MNG,ADMIN
 Route::post('/grf/status/tl/{id}','GoodreqController@apiGrfUpdateSPVSTATUS');
 Route::post('/grf/status/spv/{id}','GoodreqController@apiGrfUpdateSPVSTATUS');
 Route::post('/grf/status/mng/{id}','GoodreqController@apiGrfUpdateMNGSTATUS');
-
+Route::post('/grf/status/admin/{id}','GoodreqController@apiGrfUpdateADMINSTATUS');
+Route::get('/grf/approval/list','GoodreqController@mngStatusGrf');
 
 //API Ondelivery
 Route::post('/ondelivery', 'OndeliveryController@store');
@@ -60,4 +63,5 @@ Route::get('/approve/spv/{id}', 'ReqController@apiGetReqSPV');
 Route::get('/approve/mng/{id}', 'ReqController@apiGetReqMNG');
 
 //API USAGE BALANCE
-Route::get('/usagebalance/{product}','ReqController@masterItems');
+Route::get('/usagebalance/{product}','ReqController@masterItems'); // INLINE CLOSURE
+Route::get('/usagebalance/otb/{product}','ReqController@masterItemsOtb'); // INLINE CLOSURE

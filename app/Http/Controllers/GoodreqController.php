@@ -95,4 +95,25 @@ class GoodreqController extends Controller
         return ['status' => 200, "data" => $requ];
     }
 
+
+
+    /**
+     * DISINI KODINGAN UPDATE STATUS APPROVAL 
+     * ADMIN IM YANG DI WEB
+     * 
+     * 
+    */
+    public function apiGrfUpdateADMINSTATUS(Request $request,$code)
+    {
+
+        $requester = Goodreq::where('grf_number',$code)->update(['ADMIN_STATUS' => $request->ADMIN_STATUS]);
+        $requester_data = Goodreq::where('grf_number',$code)->get();
+
+        return ['status' => 200, "data" => $requester_data];
+    }
+    public function mngStatusGrf()
+    {
+        $requester_GRF = Goodreq::where('MNG_STATUS','=','approve')->get();
+        return ['status' => 200, "data" => $requester_GRF];
+    }
 }
