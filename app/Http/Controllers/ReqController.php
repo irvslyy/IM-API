@@ -72,13 +72,20 @@ class ReqController extends Controller
     }
     public function apiGetReqSPV($id)
     {
-        $requ  =  Req::where('SPV', $id)->get();
-        return ['status' => 200, "data" => $requ];
+        $requ  =  Req::where('SPV', $id)->where('TL_STATUS','=','Approve')->get();
+        for ($i=0; $i < count($requ); $i++) { 
+            return ['status' => 200, "data" => $requ];
+        }
+        return ['status' => 500, "data" => 'nothing'];
+
     }
     public function apiGetReqMNG($id)
     {
-        $requ  =  Req::where('MNG', $id)->get();
-        return ['status' => 200, "data" => $requ];
+        $requ  = Req::where('MNG', $id)->where('SPV_STATUS','=','Approve')->get();
+        for ($i=0; $i < count($requ); $i++) { 
+            return ['status' => 200, "data" => $requ];
+        }
+        return ['status' => 500, "data" => 'nothing'];
     }
 
     /**
@@ -162,7 +169,8 @@ class ReqController extends Controller
 
     public function mngStatusReq()
     {
-        $requester = Req::where('MNG_STATUS','=','approve')->get();
+        $requester = Req::where('MNG_STATUS','=','Approve')->get();
+
         return ['status' => 200, "data" => $requester];
     }
 }
