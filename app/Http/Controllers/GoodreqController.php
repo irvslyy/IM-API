@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Goodreq;
 use App\Req;
+use App\Stock;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 

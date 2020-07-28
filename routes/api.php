@@ -28,15 +28,17 @@ Route::get('/stock', 'StockController@StockApi');
 
 //API FORM REQUESTS
 Route::post('/form/req', 'ReqController@store');
+
 // Api update status TL,SPV,MNG
-Route::post('/request/status/tl/{id}','ReqController@apiUpdateTLSTATUS');
-Route::post('/request/status/spv/{id}','ReqController@apiUpdateSPVSTATUS');
-Route::post('/request/status/mng/{id}','ReqController@apiUpdateMNGSTATUS');
+Route::post('/request/status/tl/{code}','ReqController@apiUpdateTLSTATUS');
+Route::post('/request/status/spv/{code}','ReqController@apiUpdateSPVSTATUS');
+Route::post('/request/status/mng/{code}','ReqController@apiUpdateMNGSTATUS');
 
 //API GOOD REQUESTS FORM
 Route::get('/goodreq/employee/{emp}','GoodreqController@GRF');
 Route::post('/goodReq/', 'GoodreqController@store');
 Route::post('/goodReq/update/{id}','GoodreqController@grfUpdate');
+
 // Api update status TL,SPV,MNG
 Route::post('/grf/status/tl/{id}','GoodreqController@apiGrfUpdateSPVSTATUS');
 Route::post('/grf/status/spv/{id}','GoodreqController@apiGrfUpdateSPVSTATUS');
@@ -52,6 +54,10 @@ Route::get('/segment/', 'SegmentController@index');
 //API SEGMENT
 Route::get('/wh/{regional}', 'WarehouseController@ApiWarehouse');
 
+//APPROVE TL,SPV,MNG
 Route::get('/approve/tl/{id}', 'ReqController@apiGetReqTl');
 Route::get('/approve/spv/{id}', 'ReqController@apiGetReqSPV');
 Route::get('/approve/mng/{id}', 'ReqController@apiGetReqMNG');
+
+//API USAGE BALANCE
+Route::get('/usagebalance/{product}','ReqController@masterItems');

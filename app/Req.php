@@ -31,4 +31,8 @@ class Req extends Model
     {
         return $this->belongsTo('App\GoodReq','id');
     }
+    public function itemmaster()
+    {
+        return $this->belongsTo('App\ItemMaster','id');
+    }
 }
