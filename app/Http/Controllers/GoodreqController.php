@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Goodreq;
 use App\Req;
 use App\Stock;
+use App\Items;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,16 @@ class GoodreqController extends Controller
             'data' => $Goodreq
         ]);
     }
-
+    public function getGRF()
+    {
+        $grf = Goodreq::all();
+        for ($i=0; $i < count($grf); $i++) { 
+            for ($j=0; $j < count($grf); $j++) { 
+                $grf[$i]->item = Items::where('items_code',$grf[$i]->items_code)->select('items_code','product_code','product_name')->groupBy('items_code','product_code','product_name')->get();
+            }
+        }
+        return ["data" => $grf];
+    }
     /**
      * 
      * DISINI KODINGAN UNTUK STORE
@@ -105,15 +115,23 @@ class GoodreqController extends Controller
     */
     public function apiGrfUpdateADMINSTATUS(Request $request,$code)
     {
-
         $requester = Goodreq::where('grf_number',$code)->update(['ADMIN_STATUS' => $request->ADMIN_STATUS]);
         $requester_data = Goodreq::where('grf_number',$code)->get();
 
         return ['status' => 200, "data" => $requester_data];
     }
-    public function mngStatusGrf()
-    {
-        $requester_GRF = Goodreq::where('MNG_STATUS','=','approve')->get();
-        return ['status' => 200, "data" => $requester_GRF];
+    public function mngStatusGrf(Request $request)
+    {   
+        $grf = Goodreq::where('MNG_STATUS','=','Approve')->get();
+        for ($i=0; $i < count($grf); $i++) { 
+            $grf[$i]->qty = Req::where('request_code',$grf[$i]->grf_number)->sum('qty');
+         }
+
+        for ($i=0; $i < count($grf); $i++) { 
+           $grf[$i]->item = Req::where('request_code',$grf[$i]->grf_number)->get();
+        }
+        
+        return ["data" => $grf];
+
     }
 }

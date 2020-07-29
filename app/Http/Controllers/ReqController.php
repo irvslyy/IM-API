@@ -7,6 +7,7 @@ use App\Stock;
 use App\Items;
 use App\ItemMaster;
 use App\Segment;
+use App\Goodreq;
 use App\User;
 use DB;
 use Str;
@@ -65,10 +66,14 @@ class ReqController extends Controller
      * MENDAPATKAN TL,SPV,MNG
      * 
     */
-    public function apiGetReqTl($id)
+    public function apiGetReqTL($id)
     {
-        $requ  =  Req::where('TL', $id)->get();
-        return ['status' => 200, "data" => $requ];
+        $requ  =  Req::where('TL', $id)->where('TL_STATUS','=',null)->where('SPV_STATUS','=',null)->where('MNG_STATUS','=',null)->get();    
+        for ($i=0; $i < count($requ); $i++) { 
+            return ['status' => 200, "data" => $requ];
+        }
+        return ['status' => 500, "data" => 'nothing'];
+
     }
     public function apiGetReqSPV($id)
     {
@@ -81,12 +86,13 @@ class ReqController extends Controller
     }
     public function apiGetReqMNG($id)
     {
-        $requ  = Req::where('MNG', $id)->where('SPV_STATUS','=','Approve')->get();
+        $requ  = Req::where('MNG', $id)->where('SPV_STATUS','=','Approve')->where('TL_STATUS','=','Approve')->get();
         for ($i=0; $i < count($requ); $i++) { 
             return ['status' => 200, "data" => $requ];
         }
-        return ['status' => 500, "data" => 'nothing'];
+        return ['status' => 500, "data" => 'nothing, still waiting...'];
     }
+    
 
     /**
      * 
@@ -162,6 +168,7 @@ class ReqController extends Controller
     public function apiUpdateADMINSTATUS(Request $request,$code)
     {
         $requester = Req::where('request_code',$code)->update(['ADMIN_STATUS' => $request->ADMIN_STATUS]);
+        $requester = Goodreq::where('grf_number',$code)->update(['ADMIN_STATUS' => $request->ADMIN_STATUS]);
         $requester_data = Req::where('request_code',$code)->get();
 
         return ['status' => 200, "data" => $requester_data];
@@ -170,7 +177,6 @@ class ReqController extends Controller
     public function mngStatusReq()
     {
         $requester = Req::where('MNG_STATUS','=','Approve')->get();
-
         return ['status' => 200, "data" => $requester];
     }
 }
