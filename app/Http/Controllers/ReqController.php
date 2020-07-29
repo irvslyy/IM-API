@@ -68,27 +68,30 @@ class ReqController extends Controller
     */
     public function apiGetReqTL($id)
     {
-        $requ  =  Req::where('TL', $id)->where('TL_STATUS','=',null)->where('SPV_STATUS','=',null)->where('MNG_STATUS','=',null)->get();    
+        $requ = Req::where('TL', $id)->where('TL_STATUS','=',null)->where('SPV_STATUS','=',null)->where('MNG_STATUS','=',null)->get();  
+
         for ($i=0; $i < count($requ); $i++) { 
             return ['status' => 200, "data" => $requ];
         }
-        return ['status' => 500, "data" => 'nothing'];
+        return ['status' => 500, "data" => 'nothing, still waiting...'];  
 
     }
     public function apiGetReqSPV($id)
     {
-        $requ  =  Req::where('SPV', $id)->where('TL_STATUS','=','Approve')->get();
-        for ($i=0; $i < count($requ); $i++) { 
-            return ['status' => 200, "data" => $requ];
+        $request = Req::where('SPV', $id)->where('TL_STATUS','=','Approve')->get();
+        $request_  =  Req::where('SPV', $id)->where('TL_STATUS','=','Approve')->where('SPV_STATUS','=',null)->get();
+        for ($i=0; $i < count($request_); $i++) { 
+            return ['status' => 200, "data" => $request];
         }
-        return ['status' => 500, "data" => 'nothing'];
+        return ['status' => 500, "data" => 'nothing, still waiting...'];
 
     }
     public function apiGetReqMNG($id)
     {
-        $requ  = Req::where('MNG', $id)->where('SPV_STATUS','=','Approve')->where('TL_STATUS','=','Approve')->get();
-        for ($i=0; $i < count($requ); $i++) { 
-            return ['status' => 200, "data" => $requ];
+        $request = Req::where('MNG', $id)->where('TL_STATUS','=','Approve')->where('SPV_STATUS','=','Approve')->get();
+        $request_ = Req::where('MNG', $id)->where('TL_STATUS','=','Approve')->where('SPV_STATUS','=','Approve')->where('MNG_STATUS','=',null)->get();
+        for ($i=0; $i < count($request_); $i++) { 
+            return ['status' => 200, "data" => $request];
         }
         return ['status' => 500, "data" => 'nothing, still waiting...'];
     }
