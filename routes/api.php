@@ -17,11 +17,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:api')->group(function () { 
+
+}); 
+
 Route::group(['middleware' => ['cors']], function(){
     
-    // API LOGIN DENGAN HIRARKY
+
+    // API LOGIN DENGAN HIRARKY && API USER GET GRF DAN REQUEST
     Route::post('/login/user/', 'UserController@login');
     Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
+    Route::get('/grf/user/list/{id}','GoodreqController@UserStatusGrf');
 
     //API STOCK
     Route::get('/stock/mobile/', 'StockController@apiStockMobile');
@@ -49,7 +55,8 @@ Route::group(['middleware' => ['cors']], function(){
     Route::post('/grf/status/tl/{id}','GoodreqController@apiGrfUpdateSPVSTATUS');
     Route::post('/grf/status/spv/{id}','GoodreqController@apiGrfUpdateSPVSTATUS');
     Route::post('/grf/status/mng/{id}','GoodreqController@apiGrfUpdateMNGSTATUS');
-    Route::get('/grf/approval/list','GoodreqController@mngStatusGrf');
+    Route::get('/grf/approval/list/{wh_code}','GoodreqController@MngStatusGrf');
+    Route::get('/grf/approval/list','GoodreqController@MngStatusAll');
 
     //API Ondelivery
     Route::post('/ondelivery', 'OndeliveryController@store');

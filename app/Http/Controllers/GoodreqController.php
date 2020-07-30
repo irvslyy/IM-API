@@ -48,6 +48,7 @@ class GoodreqController extends Controller
         $Goodreq->employee_number = $req->employee_number;
         $Goodreq->access_code = $req->access_code;
         $Goodreq->status = $req->status;
+        $Goodreq->user_id = $req->user_id;
         $Goodreq->TL = $req->id_tl;
         $Goodreq->SPV = $req->id_spv;
         $Goodreq->MNG = $req->id_mgm;
@@ -120,8 +121,22 @@ class GoodreqController extends Controller
 
         return ['status' => 200, "data" => $requester_data];
     }
-    public function mngStatusGrf(Request $request)
+    public function MngStatusGrf(Request $request,$wh_code)
     {   
+        $grf = Goodreq::where('MNG_STATUS','=','Approve')->get();
+        for ($i=0; $i < count($grf); $i++) { 
+            $grf[$i]->qty = Req::where('request_code',$grf[$i]->grf_number)->where('wh_code',$wh_code)->sum('qty');
+         }
+
+        for ($i=0; $i < count($grf); $i++) { 
+           $grf[$i]->item = Req::where('request_code',$grf[$i]->grf_number)->where('wh_code',$wh_code)->get();
+        }
+        
+        return ["data" => $grf];
+
+    }
+    public function MngStatusAll()
+    {
         $grf = Goodreq::where('MNG_STATUS','=','Approve')->get();
         for ($i=0; $i < count($grf); $i++) { 
             $grf[$i]->qty = Req::where('request_code',$grf[$i]->grf_number)->sum('qty');
@@ -130,8 +145,21 @@ class GoodreqController extends Controller
         for ($i=0; $i < count($grf); $i++) { 
            $grf[$i]->item = Req::where('request_code',$grf[$i]->grf_number)->get();
         }
-        
-        return ["data" => $grf];
 
+        return ['status' => 200, "data" => $grf];
+    }
+    public function UserStatusGrf($id)
+    {
+        $user = Goodreq::where('user_id',$id)->get();
+
+        for ($i=0; $i < count($user); $i++) { 
+            $user[$i]->qty = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->sum('qty');
+         }
+
+        for ($i=0; $i < count($user); $i++) { 
+           $user[$i]->item = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->get();
+        }
+        
+        return ["data" => $user];
     }
 }

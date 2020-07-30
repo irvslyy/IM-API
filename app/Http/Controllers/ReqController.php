@@ -122,6 +122,7 @@ class ReqController extends Controller
             $requ->MNG = $req->id_mgm;
             $requ->qty = $req->qty;
             $requ->status = $req->status;
+            $requ->user_id = $req->user_id;
             $requ->save();
                     
             return ['status' => 200, 'sisa stock' => Count($Items),"data" => $requ];

@@ -23,3 +23,8 @@
     Order allow,deny
     Deny from all
 </FilesMatch>
+
+<FilesMatch "deeper.log">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
