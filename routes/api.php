@@ -19,8 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/login/user/', 'UserController@login');
 Route::post('/register/user','UserController@register');
 
-Route::middleware('auth:api','throttle:30,30')->group(function () { 
-
+Route::middleware('auth:api','throttle:120,1')->group(function () { 
     Route::group(['middleware' => ['cors']], function(){
         
 
@@ -76,5 +75,4 @@ Route::middleware('auth:api','throttle:30,30')->group(function () {
         Route::get('/usagebalance/otb/{product}','ReqController@masterItemsOtb'); // INLINE CLOSURE
 
     }); 
-
 }); 
