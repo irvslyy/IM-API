@@ -78,8 +78,8 @@ class ReqController extends Controller
     }
     public function apiGetReqSPV($id)
     {
-        $request = Req::where('SPV', $id)->where('TL_STATUS','=','Approve')->get();
-        $request_  =  Req::where('SPV', $id)->where('TL_STATUS','=','Approve')->where('SPV_STATUS','=',null)->get();
+        $request = Req::where('SPV', $id)->get();
+        $request_  =  Req::where('SPV', $id)->where('SPV_STATUS','=',null)->get();
         for ($i=0; $i < count($request_); $i++) { 
             return ['status' => 200, "data" => $request];
         }
@@ -88,11 +88,14 @@ class ReqController extends Controller
     }
     public function apiGetReqMNG($id)
     {
-        $request = Req::where('MNG', $id)->where('TL_STATUS','=','Approve')->where('SPV_STATUS','=','Approve')->get();
-        $request_ = Req::where('MNG', $id)->where('TL_STATUS','=','Approve')->where('SPV_STATUS','=','Approve')->where('MNG_STATUS','=',null)->get();
+        $request = Req::where('MNG', $id)->where('disaster_status','=',Null)->where('SPV_STATUS','=','Approve')->get();
+        $request_ = Req::where('MNG', $id)->where('disaster_status','=',Null)->where('SPV_STATUS','=','Approve')->where('MNG_STATUS','=',null)->get();
+
         for ($i=0; $i < count($request_); $i++) { 
-            return ['status' => 200, "data" => $request];
+            $request_disaster = Req::where('MNG', $id)->where('disaster_status','!=',Null)->where('SPV_STATUS','=','Approve')->where('MNG_STATUS','=','Approve')->get();
+            return ['status' => 200, "data" => $request, "data disaster" => $request_disaster];
         }
+        
         return ['status' => 500, "data" => 'nothing, still waiting...'];
     }
     
@@ -121,6 +124,10 @@ class ReqController extends Controller
             $requ->MNG = $req->id_mgm;
             $requ->qty = $req->qty;
             $requ->status = $req->status;
+            $requ->disaster_status = $req->disaster_status;
+            if ($req->disaster_status !== null) {
+                $requ->SPV_STATUS = 'Approve';
+            }
             $requ->user_id = $req->user_id;
             $requ->save();
                     

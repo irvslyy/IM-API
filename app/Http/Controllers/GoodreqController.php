@@ -34,6 +34,7 @@ class GoodreqController extends Controller
         }
         return ["data" => $grf];
     }
+
     /**
      * 
      * DISINI KODINGAN UNTUK STORE
@@ -48,6 +49,10 @@ class GoodreqController extends Controller
         $Goodreq->employee_number = $req->employee_number;
         $Goodreq->access_code = $req->access_code;
         $Goodreq->status = $req->status;
+        $Goodreq->disaster_reason = $req->disaster_reason;
+        if ($req->disaster_reason !== null) {
+            $Goodreq->SPV_STATUS = 'Approve';
+        }
         $Goodreq->user_id = $req->user_id;
         $Goodreq->SPV = $req->id_spv;
         $Goodreq->MNG = $req->id_mgm;
