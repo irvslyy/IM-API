@@ -49,7 +49,6 @@ class GoodreqController extends Controller
         $Goodreq->access_code = $req->access_code;
         $Goodreq->status = $req->status;
         $Goodreq->user_id = $req->user_id;
-        $Goodreq->TL = $req->id_tl;
         $Goodreq->SPV = $req->id_spv;
         $Goodreq->MNG = $req->id_mgm;
         $Goodreq->save();
@@ -78,16 +77,7 @@ class GoodreqController extends Controller
             'data' => $Goodreq
         ]);
     }
-
-    public function apiGrfUpdateTLSTATUS(Request $req,$id)
-    {
-        $requ = Goodreq::where('id',$id)->first();
-        $requ->TL_STATUS = $req->TL_STATUS;
-        $requ->save();
-
-        return ['status' => 200, "data" => $requ];
-    }
-
+    
     public function apiGrfUpdateSPVSTATUS(Request $req,$id)
     {
         $requ = Goodreq::where('id',$id)->first();
@@ -135,6 +125,7 @@ class GoodreqController extends Controller
         return ["data" => $grf];
 
     }
+
     public function MngStatusAll()
     {
         $grf = Goodreq::where('MNG_STATUS','=','Approve')->get();
@@ -148,6 +139,7 @@ class GoodreqController extends Controller
 
         return ['status' => 200, "data" => $grf];
     }
+
     public function UserStatusGrf($id)
     {
         $user = Goodreq::where('user_id',$id)->get();
@@ -161,6 +153,22 @@ class GoodreqController extends Controller
         }
         
         return ["data" => $user];
+    }
+
+    /**
+     * DISINI KODINGAN UPDATE STATUS BARANG 
+     * DARI SETELAH APPROVAL SAMPAI BARANG
+     * SUDAH DI TANGAN REQUESTER
+     * 
+    */
+    public function Update_Status()
+    {
+        $Goodreq = Goodreq::where('user_id',$id)->first();
+        $Goodreq->status = $request->status;
+        $Goodreq->save();
+
+        return ['status' => 200,'data' => $Goodreq];
+
     }
 }
 

@@ -117,7 +117,6 @@ class ReqController extends Controller
             $requ->wh_code = $req->wh_code;
             $requ->product_code = $req->product_code;
             $requ->product_name = $req->product_name;
-            $requ->TL = $req->id_tl;
             $requ->SPV = $req->id_spv;
             $requ->MNG = $req->id_mgm;
             $requ->qty = $req->qty;
@@ -139,14 +138,6 @@ class ReqController extends Controller
      * 
      * 
     */
-    public function apiUpdateTLSTATUS(Request $request,$code)
-    {
-        $requester = Req::where('request_code',$code)->update(['TL_STATUS' => $request->TL_STATUS]);
-        $requester_data = Req::where('request_code',$code)->get();
-
-        return ['status' => 200, "data" => $requester_data];
-    }
-
     public function apiUpdateSPVSTATUS(Request $request,$code)
     {
         $requester = Req::where('request_code',$code)->update(['SPV_STATUS' => $request->SPV_STATUS]);

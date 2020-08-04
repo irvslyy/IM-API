@@ -16,15 +16,12 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 Route::post('/login/user/', 'UserController@login');
 Route::post('/register/user','UserController@register');
 
-Route::middleware('auth:api','throttle:10|60,1')->group(function(){
-    # code...
-});
+Route::middleware('auth:api')->group(function () { 
 
-    Route::group(['middleware' => ['cors']], function(){
-        
 
         // API LOGIN DENGAN HIRARKY && API USER GET GRF DAN REQUEST
         Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
@@ -39,6 +36,7 @@ Route::middleware('auth:api','throttle:10|60,1')->group(function(){
 
         //API UPDATE STATUS APPROVAL ADMIN PADA TABLE REQUESTS DAN GRF
         Route::post('/request/status/admin/{code}','ReqController@apiUpdateADMINSTATUS');
+        Route::post('/goodrequest/update/status','GoodreqController@Update_status');
 
         // Api update status approval TL,SPV,MNG,ADMIN
         Route::post('/request/status/tl/{code}','ReqController@apiUpdateTLSTATUS');
@@ -77,4 +75,5 @@ Route::middleware('auth:api','throttle:10|60,1')->group(function(){
         Route::get('/usagebalance/{product}','ReqController@masterItems'); // INLINE CLOSURE
         Route::get('/usagebalance/otb/{product}','ReqController@masterItemsOtb'); // INLINE CLOSURE
 
-    });
+
+}); 
