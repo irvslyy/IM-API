@@ -20,6 +20,7 @@ class Req extends Model
         'product_name',
         'qty',
         'status',
+        'disaster_reason',
         'TL',
         'SPV',
         'MNG',

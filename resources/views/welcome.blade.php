@@ -27,12 +27,12 @@
 		<div class="card-body tab-content">
 			<div class="tab-pane fade show active" id="card-bottom-tab1">
 				
-
+			<h3>Login users</h3>
 			<pre class="language-css mb-3"><code>/* JSON  */
 
 "status": 200,
 "data": {
-	
+	...
 }
 </code></pre>
 
@@ -40,10 +40,21 @@
 			</div>
 
 			<div class="tab-pane fade" id="card-bottom-tab2">
-				This is the second card tab content
+				//
 			</div>
 		</div>
 	</div>
 	<!-- /bottom tabs -->
 
+@endsection
+
+@section('script')
+<script>
+	// var test = prompt("username");
+	// if (test == 'root') {
+	// 	console.log("y, ur root");
+	// } else {
+	// 	window.location.href = "http://mercusuar.uzone.id";
+	// }
+</script>
 @endsection

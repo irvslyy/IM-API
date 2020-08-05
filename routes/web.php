@@ -12,10 +12,10 @@
 */
 
 
-Auth::routes();
 Route::get('/', function () {
     return view('welcome');
 });
+Auth::routes();
 
 Route::get('/inventory','DocsController@IM_API')->name('im.api');
 

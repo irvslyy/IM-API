@@ -21,7 +21,7 @@ Route::post('/login/user/', 'UserController@login');
 Route::post('/register/user','UserController@register');
 
 Route::middleware('auth:api')->group(function () { 
-
+    
         // API LOGIN DENGAN HIRARKY && API USER GET GRF DAN REQUEST
         Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
         Route::get('/grf/user/list/{id}','GoodreqController@UserStatusGrf');
@@ -73,5 +73,4 @@ Route::middleware('auth:api')->group(function () {
         //API USAGE BALANCE
         Route::get('/usagebalance/{product}','ReqController@masterItems'); // INLINE CLOSURE
         Route::get('/usagebalance/otb/{product}','ReqController@masterItemsOtb'); // INLINE CLOSURE
-
 }); 

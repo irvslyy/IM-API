@@ -151,7 +151,7 @@ class GoodreqController extends Controller
 
         for ($i=0; $i < count($user); $i++) { 
             $user[$i]->qty = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->sum('qty');
-         }
+        }
 
         for ($i=0; $i < count($user); $i++) { 
            $user[$i]->item = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->get();

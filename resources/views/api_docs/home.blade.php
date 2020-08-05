@@ -214,7 +214,7 @@
 	<script src="{{asset('public/js/plugins/core.min.js')}}"></script>
 	<script src="{{asset('public/js/plugins/effects.min.js')}}"></script>
 	<script src="{{asset('public/js/plugins/interactions.min.js')}}"></script>
-
+	@yield('script')
 </body>
 </html>
 
