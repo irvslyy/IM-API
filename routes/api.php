@@ -73,4 +73,5 @@ Route::middleware('auth:api')->group(function () {
         //API USAGE BALANCE
         Route::get('/usagebalance/{product}','ReqController@masterItems'); // INLINE CLOSURE
         Route::get('/usagebalance/otb/{product}','ReqController@masterItemsOtb'); // INLINE CLOSURE
+
 }); 
