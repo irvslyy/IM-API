@@ -49,6 +49,7 @@ class GoodreqController extends Controller
         $Goodreq->employee_number = $req->employee_number;
         $Goodreq->access_code = $req->access_code;
         $Goodreq->status = $req->status;
+        $Goodreq->wh_code = $req->wh_code;
         $Goodreq->disaster_reason = $req->disaster_reason;
         if ($req->disaster_reason !== null) {
             $Goodreq->SPV_STATUS = 'Approve';
@@ -86,16 +87,19 @@ class GoodreqController extends Controller
     public function apiGrfUpdateSPVSTATUS(Request $req,$id)
     {
         $requ = Goodreq::where('id',$id)->first();
-        $requ->SPV_STATUS = $req->SPV_STATUS;
+        $requ->SPV_STATUS = $req->SPV_STATUS .' '. date('y-m-d H:i:s');
         $requ->save();
 
-        return ['status' => 200, "data" => $requ];
+        return [
+            "status" => 200,
+            "data" => $requ ,
+        ];
     }
 
     public function apiGrfUpdateMNGSTATUS(Request $req,$id)
     {
         $requ = Goodreq::where('id',$id)->first();
-        $requ->MNG_STATUS = $req->MNG_STATUS;
+        $requ->MNG_STATUS = $req->MNG_STATUS .' '. date('y-m-d H:i:s');
         $requ->save();
 
         return ['status' => 200, "data" => $requ];
@@ -109,14 +113,13 @@ class GoodreqController extends Controller
      * 
      * 
     */
-    public function apiGrfUpdateADMINSTATUS(Request $request,$code)
+    public function UpdatingProsesStatus(Request $request,$grf_number)
     {
-        $requester = Goodreq::where('grf_number',$code)->update(['ADMIN_STATUS' => $request->ADMIN_STATUS]);
-        $requester_data = Goodreq::where('grf_number',$code)->get();
+        $updateStatusProses = Goodreq::where('grf_number',$grf_number)->update(['status' => $request->status]);
+        $updateStatusProses = Goodreq::where('grf_number',$grf_number)->get();
 
-        return ['status' => 200, "data" => $requester_data];
+        return ["status" => 200, "data" => $updateStatusProses];
     }
-
     public function MngStatusGrf(Request $request,$wh_code)
     {   
         $goodrequest = Goodreq::where('wh_code',$wh_code)->where('MNG_STATUS','=','Approve')->where('ADMIN_STATUS','=','Approve')->get();

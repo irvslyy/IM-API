@@ -120,7 +120,6 @@ class ReqController extends Controller
             $requ->save();
                     
             return ['status' => 200, 'sisa stock' => Count($Items),"data" => $requ];
-      
         }
             return ['status' => 500, "message" => 'stock habis'];
         
@@ -135,18 +134,24 @@ class ReqController extends Controller
     */
     public function apiUpdateSPVSTATUS(Request $request,$code)
     {
-        $requester = Req::where('request_code',$code)->update(['SPV_STATUS' => $request->SPV_STATUS]);
-        $requester_data = Req::where('request_code',$code)->get();
-
-        return ['status' => 200, "data" => $requester_data];
+        $goodrequest = Goodreq::all();
+        for ($i=0; $i < count($goodrequest); $i++) { 
+            $requester = Req::where('request_code',$code)->update(['SPV_STATUS' => $request->SPV_STATUS .' '. date('y-m-d H:i:s')]);
+            $goodrequest = Goodreq::where('grf_number',$code)->update(['SPV_STATUS' => $request->SPV_STATUS .' '. date('y-m-d H:i:s')]);
+            return ['status' => 200, "message" => "update success"];
+        }
+        return ['status' => 50, "data" => '-'];
     }
 
     public function apiUpdateMNGSTATUS(Request $request,$code)
     {
-        $requester = Req::where('request_code',$code)->update(['MNG_STATUS' => $request->MNG_STATUS]);
-        $requester_data = Req::where('request_code',$code)->get();
-
-        return ['status' => 200, "data" => $requester_data];
+        $goodrequest = Goodreq::all();
+        for ($i=0; $i < count($goodrequest); $i++) { 
+            $requester = Req::where('request_code',$code)->update(['MNG_STATUS' => $request->MNG_STATUS .' '. date('y-m-d H:i:s')]);
+            $goodrequest = Goodreq::where('grf_number',$code)->update(['MNG_STATUS' => $request->MNG_STATUS .' '. date('y-m-d H:i:s')]);
+            return ['status' => 200, "message" => "update success" ];
+        }
+        return ['status' => 50, "data" => '-'];
     }
 
      /**
@@ -157,11 +162,11 @@ class ReqController extends Controller
     */
     public function apiUpdateADMINSTATUS(Request $request,$code)
     {
-        $requester = Req::where('request_code',$code)->update(['ADMIN_STATUS' => $request->ADMIN_STATUS]);
-        $requester = Goodreq::where('grf_number',$code)->update(['ADMIN_STATUS' => $request->ADMIN_STATUS]);
+        $requester = Req::where('request_code',$code)->update(['ADMIN_STATUS' => $request->ADMIN_STATUS .' '. date('y-m-d H:i:s')]);
+        $requester = Goodreq::where('grf_number',$code)->update(['ADMIN_STATUS' => $request->ADMIN_STATUS .' '. date('y-m-d H:i:s')]);
         $requester_data = Req::where('request_code',$code)->get();
 
-        return ['status' => 200, "data" => $requester_data];
+        return ['status' => 200, "message" => 'update success'];
     }
 
     public function mngStatusReq()

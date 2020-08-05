@@ -20,8 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/login/user/', 'UserController@login');
 Route::post('/register/user','UserController@register');
 
-Route::middleware('auth:api')->group(function () { 
-    
+Route::middleware('auth:api','throttle:75,1')->group(function () { 
+
         // API LOGIN DENGAN HIRARKY && API USER GET GRF DAN REQUEST
         Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
         Route::get('/grf/user/list/{id}','GoodreqController@UserStatusGrf');
@@ -48,6 +48,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/goodrequest','GoodreqController@getGRF');
         Route::post('/goodReq/', 'GoodreqController@store');
         Route::post('/goodReq/update/{id}','GoodreqController@grfUpdate');
+        Route::post('/goodreq/update/proses/{grf_number}','GoodreqController@UpdatingProsesStatus');
 
         // Api update status approval TL,SPV,MNG,ADMIN
         Route::post('/grf/status/tl/{id}','GoodreqController@apiGrfUpdateSPVSTATUS');
