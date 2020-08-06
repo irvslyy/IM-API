@@ -77,10 +77,10 @@ class ReqController extends Controller
     }
     public function apiGetReqMNG($id)
     {
-        $request = Req::where('MNG', $id)->where('disaster_reason','=',Null)->where('SPV_STATUS','=','Approve')->get();
-        $request_ = Req::where('MNG', $id)->where('disaster_reason','=',Null)->where('SPV_STATUS','=','Approve')->where('MNG_STATUS','=',null)->get();
+        $request = Req::where('MNG', $id)->where('disaster_reason','=',Null)->where('SPV_STATUS','like','%Approve%')->get();
+        $request_ = Req::where('MNG', $id)->where('disaster_reason','=',Null)->where('SPV_STATUS','like','%Approve%')->where('MNG_STATUS','=',null)->get();
         for ($i=0; $i < count($request_); $i++) { 
-            $request_disaster = Req::where('MNG', $id)->where('disaster_reason','!=',Null)->where('SPV_STATUS','=','Approve')->get();
+            $request_disaster = Req::where('MNG', $id)->where('disaster_reason','!=',Null)->where('SPV_STATUS','like','%Approve%')->get();
             return ['status' => 200, "data" => $request, "data disaster" => $request_disaster];
         }
         
@@ -97,7 +97,6 @@ class ReqController extends Controller
     public function store(Request $req)
     {
         $Items  = Items::all();
-        // $result  = Count($Items) - 1;
 
         for ($i=0; $i < Count($Items); $i++) { 
             $requ  = new Req;
@@ -171,7 +170,7 @@ class ReqController extends Controller
 
     public function mngStatusReq()
     {
-        $requester = Req::where('MNG_STATUS','=','Approve')->get();
+        $requester = Req::where('MNG_STATUS','like','%Approve%')->get();
         return ['status' => 200, "data" => $requester];
     }
 }

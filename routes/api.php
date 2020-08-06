@@ -38,7 +38,6 @@ Route::middleware('auth:api','throttle:75,1')->group(function () {
         Route::post('/goodrequest/update/status','GoodreqController@Update_status');
 
         // Api update status approval TL,SPV,MNG,ADMIN
-        Route::post('/request/status/tl/{code}','ReqController@apiUpdateTLSTATUS');
         Route::post('/request/status/spv/{code}','ReqController@apiUpdateSPVSTATUS');
         Route::post('/request/status/mng/{code}','ReqController@apiUpdateMNGSTATUS');
         Route::get('/request/approval/list','ReqController@mngStatusReq');
@@ -51,7 +50,6 @@ Route::middleware('auth:api','throttle:75,1')->group(function () {
         Route::post('/goodreq/update/proses/{grf_number}','GoodreqController@UpdatingProsesStatus');
 
         // Api update status approval TL,SPV,MNG,ADMIN
-        Route::post('/grf/status/tl/{id}','GoodreqController@apiGrfUpdateSPVSTATUS');
         Route::post('/grf/status/spv/{id}','GoodreqController@apiGrfUpdateSPVSTATUS');
         Route::post('/grf/status/mng/{id}','GoodreqController@apiGrfUpdateMNGSTATUS');
         Route::get('/grf/approval/list/{wh_code}','GoodreqController@MngStatusGrf');

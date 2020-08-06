@@ -122,7 +122,7 @@ class GoodreqController extends Controller
     }
     public function MngStatusGrf(Request $request,$wh_code)
     {   
-        $goodrequest = Goodreq::where('wh_code',$wh_code)->where('MNG_STATUS','=','Approve')->where('ADMIN_STATUS','=','Approve')->get();
+        $goodrequest = Goodreq::where('wh_code',$wh_code)->where('MNG_STATUS','like','%Approve%')->where('ADMIN_STATUS','like','%Approve%')->get();
         for ($i=0; $i < count($goodrequest); $i++) { 
             $goodrequest[$i]->qty = Req::where('request_code',$goodrequest[$i]->grf_number)->where('wh_code',$wh_code)->sum('qty');
         }
@@ -136,7 +136,7 @@ class GoodreqController extends Controller
 
     public function MngStatusAll()
     {
-        $grf = Goodreq::where('MNG_STATUS','=','Approve')->get();
+        $grf = Goodreq::where('MNG_STATUS','like','%Approve%')->where('ADMIN_STATUS',null)->get();
         for ($i=0; $i < count($grf); $i++) { 
             $grf[$i]->qty = Req::where('request_code',$grf[$i]->grf_number)->sum('qty');
          }
