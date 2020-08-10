@@ -38,7 +38,10 @@ class StockController extends Controller
             }
             $item[$i]->data = $data;
         }
-        return ["data" => $item];
+
+        return response()->json([
+            'data' => $items,
+        ])
     }
 
     public function apiStockMobile(Request $req)
@@ -48,6 +51,8 @@ class StockController extends Controller
             $item[$i]->data = Items::where('product_name', $item[$i]->product_name)->first();
         }
 
-        return ["data" => $item];
+        return reponse()->json([
+            'data' => $item
+        ]);
     }
 }
