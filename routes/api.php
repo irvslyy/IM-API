@@ -24,7 +24,7 @@ Route::post('/register/user','AuthController@register');
 Route::get('/usagebalance','MasteritemsController@masterItems'); // INLINE CLOSURE
 Route::get('/usagebalance/otb/{product}','MasteritemsController@masterItemsOtb'); // INLINE CLOSURE
 
-Route::middleware('auth:api')->group(function () { 
+Route::middleware('auth:api','throttle:2,1')->group(function () { 
 
     
         // API LOGIN DENGAN HIRARKY && API USER GET GRF DAN REQUEST
@@ -83,4 +83,8 @@ Route::middleware('auth:api')->group(function () {
         //API MANAGER GET ALL TL
         Route::get('/manager/{id}','UserController@managerTL');
         Route::get('/supervisor/{id}','UserController@supervisorTLS');
+});
+Route::middleware('throttle:10,1')->group(function ()
+{
+    Route::get('/manager/test/{id}','UserController@manager');
 });

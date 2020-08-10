@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\History;
+use App\Goodreq;
+use App\Req;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -61,4 +63,6 @@ class HistoryController extends Controller
             'data' => $history
         ]);
     }
+
+
 }

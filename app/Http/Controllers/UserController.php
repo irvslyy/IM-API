@@ -112,6 +112,20 @@ class UserController extends Controller
       ]);
     }
 
+    public function manager($id)
+    {
+      $manager = User::where('id',$id)->get();
+      for ($i=0; $i < count($manager); $i++) { 
+        $supervisor = User::where('parent_id',$manager[$i]->id)->get();
+        for ($e=0; $e < count($supervisor); $e++) { 
+          $leader = User::where('parent_id',$supervisor[$e]->id)->get();
+          for ($u=0; $u < count($leader); $u++) { 
+            return $leader;
+          }
+        }
+      }
+    }
+
     public function supervisorTLS($id)
     {
        $supervisorTL = User::where('role','like','%team leader%')->get();
