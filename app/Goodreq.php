@@ -28,4 +28,9 @@ class Goodreq extends Model
     {
         return $this->belongsTo('App\Items','id');
     }
+
+    public function history()
+    {
+        return $this->hasOne('App\History','grf_id');
+    }
 }

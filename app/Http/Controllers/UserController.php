@@ -80,7 +80,11 @@ class UserController extends Controller
           $user_id = $heirarky->supervisor_code;
           $loop++;
       }
-      return ["status" => 200, "data" => array_reverse($heirarky_return)];
+      
+      return response()->json([
+        'status' => 200,
+        'data' => array_reverse($heirarky_return)
+      ]);
     }
 
     public function managerTL($id)
@@ -88,19 +92,24 @@ class UserController extends Controller
       $managerTL = User::where('role','like','%supervisor%')->get();
       for ($i=0; $i < count($managerTL); $i++) { 
         $managerTL = User::where('parent_id',$id)->get();
+
         for ($j=0; $j < count($managerTL); $j++) { 
-          $managers = User::where('role','like','%team leader%')->where('parent_id',$managerTL[$i]->id)->get();
-          return [
+          $managers = User::where('role','like','%team leader%')->where('parent_id',$managerTL[$j]->id)->get();
+
+          return response()->json([
             'status' => 200, 
             'supervisor' => $managerTL,
             'leader' => $managers,
-          ];
+          ]);
+
         }
+
       }
-      return [
-        'status' => 404, 
+
+      return response()->json([
+        'status' => 404,
         'message' => 'manager id not found'
-      ];
+      ]);
     }
 
     public function supervisorTLS($id)
@@ -110,41 +119,15 @@ class UserController extends Controller
          $supervisorSL = User::where('parent_id',$id)->get();
          for ($j=0; $j < count($supervisorTL); $j++) { 
            $sales = User::where('role','like','%staff%')->where('parent_id',$supervisorTL[$i]->id)->get();
-           return [
+
+           return response()->json([
              'status' => 200,
              'team leader' => $supervisorSL,
              'sales/staff'=> $sales
-           ];
+           ]);
+
          }
        }
-    }
-
-    public function TestingForAll($id)
-    {
-      $managerTL = User::where('role','like','%supervisor%')->get();
-      
-      for ($i=0; $i < count($managerTL); $i++) { 
-        $managerTL = User::where('parent_id',$id)->get();
-
-        for ($j=0; $j < count($managerTL); $j++) { 
-          $managers = User::where('role','like','%team leader%')->where('parent_id',$managerTL[$j]->id)->get();
-
-          for ($e=0; $e < count($managers); $e++) { 
-            $staff = User::where('role','like','%staff%')->where('parent_id',$managers[$e]->id)->get();
-            return [
-              'status' => 200, 
-              'supervisor' => $managerTL,
-              'leader' => $managers,
-              'staff' => $staff
-            ];
-          }
-
-        }
-      }
-      return [
-        'status' => 404, 
-        'message' => 'manager id not found'
-      ];
     }
 
 }

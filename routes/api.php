@@ -26,13 +26,14 @@ Route::get('/usagebalance/otb/{product}','MasteritemsController@masterItemsOtb')
 
 Route::middleware('auth:api')->group(function () { 
 
+    
         // API LOGIN DENGAN HIRARKY && API USER GET GRF DAN REQUEST
         Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
         Route::get('/grf/user/list/{id}','GoodreqController@UserStatusGrf');
 
         //API STOCK
-        Route::get('/stock/mobile/', 'StockController@apiStockMobile');
         Route::get('/stock', 'StockController@StockApi');
+        Route::get('/stock/mobile/', 'StockController@apiStockMobile');
 
         //API FORM REQUESTS 
         Route::post('/form/req', 'ReqController@store');
@@ -58,7 +59,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/grf/status/mng/{id}','GoodreqController@apiGrfUpdateMNGSTATUS');
         Route::get('/grf/approval/list/{wh_code}','GoodreqController@MngStatusGrf');
         Route::get('/grf/approval/list','GoodreqController@MngStatusAll');
-        Route::get('/grf/approval/list/{grf_number}','GoodreqController@MngStatusAllByGnumber');
+        Route::get('/grf/approval/listing/{grf_number}','GoodreqController@MngStatusAllByGnumber');
 
         //API Ondelivery
         Route::post('/ondelivery', 'OndeliveryController@store');
@@ -83,5 +84,3 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/manager/{id}','UserController@managerTL');
         Route::get('/supervisor/{id}','UserController@supervisorTLS');
 });
-
-Route::get('/all/manager/{id}','UserController@TestingForAll');

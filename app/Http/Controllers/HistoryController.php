@@ -7,16 +7,45 @@ use Illuminate\Http\Request;
 
 class HistoryController extends Controller
 {
+    /**
+     * 
+     * DISINI UNTUK MENDAPATKANN ALL HISTORY 
+     * TANPA FILTER SEKALIPUN
+     * 
+    */
     public function History()
     {
         $history = History::all();
-        return ['status' => 200, 'data' => $history];
+
+        return response()->json([
+            'status' => 200,
+            'data' => $history
+        ]);
     }
+
+    /**
+     * DISINI UNTUK MENDAPATKAN HISTORY 
+     * BERDASARKAN FILTER REQUEST CODE
+     * 
+     * 
+    */
     public function History_users($request_code)
     {
         $history = History::where('request_code',$request_code)->get();
-        return ['status' => 200, 'data' => $history];
+     
+        return response()->json([
+            'status' => 200,
+            'data' => $history
+        ]);
     }
+
+    /**
+     * 
+     * DISINI POST USER_ID,REQUEST_CODE,ID TL, SPV, MNG
+     * UNTUK KEBUTUHAN FILTERING HISTORY APPROVAL
+     * 
+    */
+    
     public function History_store(Request $request)
     {
         $history = new History;
@@ -27,6 +56,9 @@ class HistoryController extends Controller
         $history->MNG = $request->MNG;
         $history->save();
 
-        return ['status' => 200, 'data' => $history];
+        return response()->json([
+            'status' => 200,
+            'data' => $history
+        ]);
     }
 }

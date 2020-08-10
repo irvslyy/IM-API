@@ -28,21 +28,34 @@ class ReqController extends Controller
     public function apiGetReqSPV($id)
     {
         $request_  =  Req::where('SPV', $id)->where('disaster_reason','=',Null)->where('SPV_STATUS','=',Null)->get();
-        for ($i=0; $i < count($request_); $i++) { 
-            return ['status' => 200, "data" => $request_];
+        for ($i=0; $i < count($request_); $i++) {
+            return response()->json([
+                'status' => 200,
+                'data' => $request_
+            ]);
         }
-        return ['status' => 500, "data" => 'nothing, still waiting...'];
-
+        return response()->json([
+            'status' => 404,
+            'data' => 'no data available'
+        ]);
     }
     public function apiGetReqMNG($id)
     {
         $request_ = Req::where('MNG', $id)->where('disaster_reason','=',Null)->where('SPV_STATUS','like','%Approve%')->where('MNG_STATUS','=',null)->get();
         for ($i=0; $i < count($request_); $i++) { 
             $request_disaster = Req::where('MNG', $id)->where('disaster_reason','!=',Null)->where('SPV_STATUS','like','%Approve%')->get();
-            return ['status' => 200, "data" => $request_, "data disaster" => $request_disaster];
+
+            return response()->json([
+                'status' => 200,
+                'data' => $request_,
+                'data disaster' => $request_disaster
+            ]);
         }
         
-        return ['status' => 500, "data" => 'nothing, still waiting...'];
+        return response()->json([
+            'status' => 404,
+            'data' => 'no data available'
+        ]);
     }
     
 
@@ -76,9 +89,16 @@ class ReqController extends Controller
             $requ->user_id = $req->user_id;
             $requ->save();
                     
-            return ['status' => 200, 'sisa stock' => Count($Items),"data" => $requ];
+            return response()->json([
+                'status' => 200,
+                'sisa stock' =>  Count($Items),
+                'data' => $requ
+            ]);
         }
-            return ['status' => 500, "message" => 'stock habis'];
+            return response()->json([
+                'status' => 404,
+                'message' => 'stock habis'
+            ]);
         
     }   
     
@@ -96,9 +116,17 @@ class ReqController extends Controller
             $requester = Req::where('request_code',$code)->update(['SPV_STATUS' => $request->SPV_STATUS]);
             $goodrequest = Goodreq::where('grf_number',$code)->update(['SPV_STATUS' => $request->SPV_STATUS]);
             $requester = History::where('request_code',$code)->update(['SPV_STATUS' => $request->SPV_STATUS, 'SPV_APPROVAL_DATE' => date('y-m-d H:i:s') ]);
-            return ['status' => 200, "message" => "update success"];
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'update success'
+            ]);
         }
-        return ['status' => 50, "data" => '-'];
+
+        return response()->json([
+            'status' => 404,
+            'data' => 'no ada available'
+        ]);
     }
 
     public function apiUpdateMNGSTATUS(Request $request,$code)
@@ -108,9 +136,16 @@ class ReqController extends Controller
             $requester = Req::where('request_code',$code)->update(['MNG_STATUS' => $request->MNG_STATUS]);
             $goodrequest = Goodreq::where('grf_number',$code)->update(['MNG_STATUS' => $request->MNG_STATUS]);
             $requester = History::where('request_code',$code)->update(['MNG_STATUS' => $request->MNG_STATUS, 'MNG_APPROVAL_DATE' => date('y-m-d H:i:s')]);
-            return ['status' => 200, "message" => "update success" ];
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'update success'
+            ]);
         }
-        return ['status' => 50, "data" => '-'];
+        return response()->json([
+            'status' => 404,
+            'message' => 'no ada available'
+        ]);
     }
 
      /**
@@ -126,16 +161,25 @@ class ReqController extends Controller
         $requester = History::where('request_code',$code)->update(['ADMIN_STATUS' => $request->ADMIN_STATUS, 'ADMIN_APPROVAL_DATE' => date('y-m-d H:i:s')]);
         $requester_data = Req::where('request_code',$code)->get();
         for ($i=0; $i < count($requester_grf); $i++) { 
-            return 'OK';   
+            return response()->json([
+                'status' => 200,
+                'message' => 'update success'
+            ]);
         }
 
-        return ['status' => 200, "message" => 'update success'];
+        return response()->json([
+            'status' => 500,
+            'message' => 'update failed'
+        ]);
     }
 
     public function mngStatusReq()
     {
         $requester = Req::where('MNG_STATUS','like','%Approve%')->get();
-        return ['status' => 200, "data" => $requester];
+        return response()->json([
+            'status' => 200,
+            'data' => $requester
+        ]);
     }
 }
 
