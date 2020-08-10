@@ -19,7 +19,6 @@ class StockController extends Controller
             'data' => $stock
         ]);
     }
-
     public function StockApi(Request $req)
     {
         // dd($req->wh_code);

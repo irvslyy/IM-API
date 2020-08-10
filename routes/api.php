@@ -81,5 +81,7 @@ Route::middleware('auth:api')->group(function () {
 
         //API MANAGER GET ALL TL
         Route::get('/manager/{id}','UserController@managerTL');
+        Route::get('/supervisor/{id}','UserController@supervisorTLS');
 });
 
+Route::get('/all/manager/{id}','UserController@TestingForAll');
