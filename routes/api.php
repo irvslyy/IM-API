@@ -20,11 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/login/user/', 'AuthController@login');
 Route::post('/register/user','AuthController@register');
 
-//API USAGE BALANCE
-Route::get('/usagebalance','MasteritemsController@masterItems'); // INLINE CLOSURE
-Route::get('/usagebalance/otb/{product}','MasteritemsController@masterItemsOtb'); // INLINE CLOSURE
 
-Route::middleware('auth:api','throttle:2,1')->group(function () { 
+Route::middleware('auth:api','throttle:60,1')->group(function () { 
 
     
         // API LOGIN DENGAN HIRARKY && API USER GET GRF DAN REQUEST
@@ -81,10 +78,14 @@ Route::middleware('auth:api','throttle:2,1')->group(function () {
         Route::get('/history/approval/{request_code}','HistoryController@History_users');
 
         //API MANAGER GET ALL TL
-        Route::get('/manager/{id}','UserController@managerTL');
-        Route::get('/supervisor/{id}','UserController@supervisorTLS');
+        Route::get('/manager/{id}','UserController@getStaffFromManager');
+
+
+        //API USAGE BALANCE
+        Route::get('/usagebalance/{segment}','MasteritemsController@masterItems');
 });
-Route::middleware('throttle:10,1')->group(function ()
-{
-    Route::get('/manager/test/{id}','UserController@manager');
-});
+
+
+
+
+

@@ -27,21 +27,20 @@ class StockController extends Controller
         for ($i = 0; $i < count($item); $i++) {
             $qty = 0;
             for ($j = 0; $j < count($stock); $j++) {
-                // dd($stock[$j]->item->product_name == $item[$i]->product_name);
                 if ($stock[$j]->item->product_name == $item[$i]->product_name) {
                     $qty++;
-                }
+                } 
             }
             $data = Items::where('product_name', $item[$i]->product_name)->first();
             if ($qty != null) {
                 $data->qty = $qty;
-            }
+            } 
             $item[$i]->data = $data;
         }
 
         return response()->json([
-            'data' => $items,
-        ])
+            'data' => $item,
+        ]);
     }
 
     public function apiStockMobile(Request $req)

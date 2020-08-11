@@ -87,62 +87,24 @@ class UserController extends Controller
       ]);
     }
 
-    public function managerTL($id)
+
+
+    public function getStaffFromManager($id)
     {
-      $managerTL = User::where('role','like','%supervisor%')->get();
-      for ($i=0; $i < count($managerTL); $i++) { 
-        $managerTL = User::where('parent_id',$id)->get();
-
-        for ($j=0; $j < count($managerTL); $j++) { 
-          $managers = User::where('role','like','%team leader%')->where('parent_id',$managerTL[$j]->id)->get();
-
-          return response()->json([
-            'status' => 200, 
-            'supervisor' => $managerTL,
-            'leader' => $managers,
-          ]);
-
-        }
-
+      $staff = User::where('role','like','%staff%')->where('mng_id',$id)->get();
+      for ($i=0; $i < count($staff); $i++) { 
+        return response()->json([
+          'status' => 200,
+          'total staff' => count($staff),
+          'data' => $staff
+        ]);
       }
-
       return response()->json([
         'status' => 404,
         'message' => 'manager id not found'
       ]);
     }
 
-    public function manager($id)
-    {
-      $manager = User::where('id',$id)->get();
-      for ($i=0; $i < count($manager); $i++) { 
-        $supervisor = User::where('parent_id',$manager[$i]->id)->get();
-        for ($e=0; $e < count($supervisor); $e++) { 
-          $leader = User::where('parent_id',$supervisor[$e]->id)->get();
-          for ($u=0; $u < count($leader); $u++) { 
-            return $leader;
-          }
-        }
-      }
-    }
-
-    public function supervisorTLS($id)
-    {
-       $supervisorTL = User::where('role','like','%team leader%')->get();
-       for ($i=0; $i < count($supervisorTL); $i++) { 
-         $supervisorSL = User::where('parent_id',$id)->get();
-         for ($j=0; $j < count($supervisorTL); $j++) { 
-           $sales = User::where('role','like','%staff%')->where('parent_id',$supervisorTL[$i]->id)->get();
-
-           return response()->json([
-             'status' => 200,
-             'team leader' => $supervisorSL,
-             'sales/staff'=> $sales
-           ]);
-
-         }
-       }
-    }
 
 }
 

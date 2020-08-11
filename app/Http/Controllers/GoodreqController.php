@@ -6,6 +6,7 @@ use App\Req;
 use App\Stock;
 use App\Items;
 use App\History;
+use App\User;
 use DB;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
@@ -217,6 +218,7 @@ class GoodreqController extends Controller
         ]);
 
     }
+    
 }
 
 

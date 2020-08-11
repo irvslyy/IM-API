@@ -47,7 +47,6 @@ class HistoryController extends Controller
      * UNTUK KEBUTUHAN FILTERING HISTORY APPROVAL
      * 
     */
-    
     public function History_store(Request $request)
     {
         $history = new History;
