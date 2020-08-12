@@ -5,11 +5,13 @@ use App\Goodreq;
 use App\Req;
 use App\Stock;
 use App\Items;
+use App\History;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 
 class GoodreqController extends Controller
 {
+
     /**
      * DISINI KODINGAN UNTUK MENDAPATKAN
      * DATA PER USERS BERDASARKAN EMPLOYEE NUMBER
@@ -32,7 +34,11 @@ class GoodreqController extends Controller
                 $grf[$i]->item = Items::where('items_code',$grf[$i]->items_code)->select('items_code','product_code','product_name')->groupBy('items_code','product_code','product_name')->get();
             }
         }
-        return ["data" => $grf];
+
+        return response()->json([
+            'status' => 200,
+            'data' => $grf
+        ]);
     }
 
     /**
@@ -53,7 +59,7 @@ class GoodreqController extends Controller
         $Goodreq->disaster_reason = $req->disaster_reason;
         if ($req->disaster_reason !== null) {
             $Goodreq->SPV_STATUS = 'Approve';
-            $Goodreq->delegate_id = $request->delegate_id;
+            $Goodreq->delegate_id = $req->delegate_id;
         }
         $Goodreq->user_id = $req->user_id;
         $Goodreq->SPV = $req->id_spv;
@@ -75,8 +81,8 @@ class GoodreqController extends Controller
     */
     public function grfUpdate(Request $request,$id)
     {
-        $Goodreq = Goodreq::where('grf_number',$id)->first();
-        $Goodreq->status = $request->status;
+        $Goodreq = History::where('request_code',$id)->first();
+        $Goodreq->STATUS_PACKAGE = $request->status;
         $Goodreq->save();
 
         return response()->json([
@@ -87,23 +93,34 @@ class GoodreqController extends Controller
     
     public function apiGrfUpdateSPVSTATUS(Request $req,$id)
     {
-        $requ = Goodreq::where('id',$id)->first();
-        $requ->SPV_STATUS = $req->SPV_STATUS .' '. date('y-m-d H:i:s');
-        $requ->save();
+        $requ = Goodreq::where('grf_number',$id)->first();
+        $requ = History::where('request_code',$id)->update(['SPV_STATUS' => $req->SPV_STATUS ]);
+        $grf = Goodreq::where('grf_number',$id)->get();
 
-        return [
-            "status" => 200,
-            "data" => $requ ,
-        ];
+        for ($i=0; $i < count($grf); $i++) { 
+            $grf[$i]->history = History::where('request_code',$grf[$i]->grf_number)->get();
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $grf
+        ]);
     }
 
     public function apiGrfUpdateMNGSTATUS(Request $req,$id)
     {
-        $requ = Goodreq::where('id',$id)->first();
-        $requ->MNG_STATUS = $req->MNG_STATUS .' '. date('y-m-d H:i:s');
-        $requ->save();
+        $requ = Goodreq::where('grf_number',$id)->first();
+        $requ = History::where('request_code',$id)->update(['MNG_STATUS' => $req->MNG_STATUS ]);
+        $grf = Goodreq::where('grf_number',$id)->get();
 
-        return ['status' => 200, "data" => $requ];
+        for ($i=0; $i < count($grf); $i++) { 
+            $grf[$i]->history = History::where('request_code',$grf[$i]->grf_number)->get();
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $grf
+        ]);
     }
 
     /**
@@ -112,39 +129,39 @@ class GoodreqController extends Controller
      * 
      * 
     */
-    public function UpdatingProsesStatus(Request $request,$grf_number)
-    {
-        $updateStatusProses = Goodreq::where('grf_number',$grf_number)->update(['status' => $request->status]);
-        $updateStatusProses = Goodreq::where('grf_number',$grf_number)->get();
-
-        return ["status" => 200, "data" => $updateStatusProses];
-    }
+    
     public function MngStatusGrf(Request $request,$wh_code)
     {   
-        $goodrequest = Goodreq::where('wh_code',$wh_code)->where('status','!=','Shipping')->where('MNG_STATUS','like','%Approve%')->where('ADMIN_STATUS','like','%Approve%')->get();
+        $goodrequest = History::where('wh_code',$wh_code)->where('STATUS_PACKAGE','!=','Shipping')->where('MNG_STATUS','like','%Approve%')->where('ADMIN_STATUS','like','%Approve%')->get();
         for ($i=0; $i < count($goodrequest); $i++) { 
-            $goodrequest[$i]->qty = Req::where('request_code',$goodrequest[$i]->grf_number)->where('wh_code',$wh_code)->sum('qty');
+            $goodrequest[$i]->qty = Req::where('request_code',$goodrequest[$i]->request_code)->where('wh_code',$wh_code)->sum('qty');
         }
 
         for ($i=0; $i < count($goodrequest); $i++) { 
-           $goodrequest[$i]->item = Req::where('request_code',$goodrequest[$i]->grf_number)->where('wh_code',$wh_code)->get();
+           $goodrequest[$i]->item = Req::where('request_code',$goodrequest[$i]->request_code)->where('wh_code',$wh_code)->get();
         }
         
-        return ["data" => $goodrequest];
+        return response()->json([
+            'status' => 200,
+            'data' => $goodrequest
+        ]);    
     }
 
     public function MngStatusAll()
     {
-        $grf = Goodreq::where('MNG_STATUS','like','%Approve%')->where('ADMIN_STATUS',null)->get();
+        $grf = History::where('MNG_STATUS','like','%Approve%')->where('ADMIN_STATUS',null)->get();
         for ($i=0; $i < count($grf); $i++) { 
-            $grf[$i]->qty = Req::where('request_code',$grf[$i]->grf_number)->sum('qty');
+            $grf[$i]->qty = Req::where('request_code',$grf[$i]->request_code)->sum('qty');
         }
 
         for ($i=0; $i < count($grf); $i++) { 
-           $grf[$i]->item = Req::where('request_code',$grf[$i]->grf_number)->get();
+           $grf[$i]->item = Req::where('request_code',$grf[$i]->request_code)->get();
         }
 
-        return ['status' => 200, "data" => $grf];
+        return response()->json([
+            'status' => 200,
+            'data' => $grf
+        ]);
     }
 
     public function MngStatusAllByGnumber($grf_number)
@@ -155,10 +172,17 @@ class GoodreqController extends Controller
         }
 
         for ($i=0; $i < count($grf); $i++) { 
+            $grf[$i]->history = History::where('id',$grf[$i]->history_id)->get();
+        }
+
+        for ($i=0; $i < count($grf); $i++) { 
            $grf[$i]->item = Req::where('request_code',$grf[$i]->grf_number)->get();
         }
 
-        return ['status' => 200, "data" => $grf];
+        return response()->json([
+            'status' => 200,
+            'data' => $grf
+        ]);
     }
 
     public function UserStatusGrf($id)
@@ -173,7 +197,10 @@ class GoodreqController extends Controller
            $user[$i]->item = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->get();
         }
         
-        return ["data" => $user];
+        return response()->json([
+            'status' => 200,
+            'data' => $user
+        ]);
     }
     
     /**
@@ -188,8 +215,22 @@ class GoodreqController extends Controller
         $Goodreq->status = $request->status;
         $Goodreq->save();
 
-        return ['status' => 200,'data' => $Goodreq];
+        return response()->json([
+            'status' => 200,
+            'data' => $Goodreq
+        ]);
+    }
 
+    public function UpdatingProsesStatus(Request $request,$grf_number)
+    {
+        $updateStatusProses = Goodreq::where('grf_number',$grf_number)->update(['status' => $request->status]);
+        $updateStatusProses = History::where('request_code',$grf_number)->update(['STATUS_PACKAGE' => $request->status, 'STATUS_DATE_PACKAGE' => date('y-m-d H:i:s') ]);
+        $updateStatusProses = Goodreq::where('grf_number',$grf_number)->get();
+
+        return response()->json([
+            'status' => 200,
+            'data' => $updateStatusProses
+        ]);
     }
 }
 

@@ -20,9 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/login/user/', 'AuthController@login');
 Route::post('/register/user','AuthController@register');
 
-
+    
 Route::middleware('auth:api','throttle:60,1')->group(function () { 
-
     
         // API LOGIN DENGAN HIRARKY && API USER GET GRF DAN REQUEST
         Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
@@ -36,10 +35,9 @@ Route::middleware('auth:api','throttle:60,1')->group(function () {
         Route::post('/form/req', 'ReqController@store');
 
         //API UPDATE STATUS APPROVAL ADMIN PADA TABLE REQUESTS DAN GRF
-        Route::post('/request/status/admin/{code}','ReqController@apiUpdateADMINSTATUS');
         Route::post('/goodrequest/update/status','GoodreqController@Update_status');
 
-        // Api update status approval TL,SPV,MNG,ADMIN
+        // Api update status approval SPV,MNG,ADMIN
         Route::post('/request/status/spv/{code}','ReqController@apiUpdateSPVSTATUS');
         Route::post('/request/status/mng/{code}','ReqController@apiUpdateMNGSTATUS');
         Route::get('/request/approval/list','ReqController@mngStatusReq');
@@ -49,14 +47,16 @@ Route::middleware('auth:api','throttle:60,1')->group(function () {
         Route::get('/goodrequest','GoodreqController@getGRF');
         Route::post('/goodReq/', 'GoodreqController@store');
         Route::post('/goodReq/update/{id}','GoodreqController@grfUpdate');
-        Route::post('/goodreq/update/proses/{grf_number}','GoodreqController@UpdatingProsesStatus');
 
         // Api update status approval TL,SPV,MNG,ADMIN
         Route::post('/grf/status/spv/{id}','GoodreqController@apiGrfUpdateSPVSTATUS');
         Route::post('/grf/status/mng/{id}','GoodreqController@apiGrfUpdateMNGSTATUS');
         Route::get('/grf/approval/list/{wh_code}','GoodreqController@MngStatusGrf');
         Route::get('/grf/approval/list','GoodreqController@MngStatusAll');
-        Route::get('/grf/approval/listing/{grf_number}','GoodreqController@MngStatusAllByGnumber');
+        Route::post('/goodreq/update/proses/{grf_number}','GoodreqController@UpdatingProsesStatus');
+        Route::get('/grf/approval/listing/{request_code}','GoodreqController@MngStatusAllByGnumber');
+        Route::post('/request/status/admin/{code}','GoodreqController@apiUpdateADMINSTATUS');
+
 
         //API Ondelivery
         Route::post('/ondelivery', 'OndeliveryController@store');
@@ -68,7 +68,6 @@ Route::middleware('auth:api','throttle:60,1')->group(function () {
         Route::get('/wh/{regional}', 'WarehouseController@ApiWarehouse');
 
         //APPROVE TL,SPV,MNG
-        Route::get('/approve/tl/{id}', 'ReqController@apiGetReqTL');
         Route::get('/approve/spv/{id}', 'ReqController@apiGetReqSPV');
         Route::get('/approve/mng/{id}', 'ReqController@apiGetReqMNG');
 
@@ -82,8 +81,8 @@ Route::middleware('auth:api','throttle:60,1')->group(function () {
 
         //API USAGE BALANCE
         Route::get('/usage/{id}','MasteritemsController@usage');
+        Route::get('/usagewarehouse/{segment_code}/{wh_code}','MasteritemsController@usagePerWarehouse');
+
 });
 
-
-Route::get('/users','MasteritemsController@usageBalance');
 

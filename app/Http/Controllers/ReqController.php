@@ -27,11 +27,12 @@ class ReqController extends Controller
     */
     public function apiGetReqSPV($id)
     {
-        $request_  =  Req::where('SPV', $id)->where('disaster_reason','=',Null)->where('SPV_STATUS','=',Null)->get();
+        $request_ = History::where('SPV', $id)->where('SPV_STATUS','=',Null)->get();
         for ($i=0; $i < count($request_); $i++) {
+            $req = Req::where('request_code',$request_[$i]->request_code)->get();
             return response()->json([
                 'status' => 200,
-                'data' => $request_
+                'data' => $req
             ]);
         }
         return response()->json([
@@ -39,16 +40,15 @@ class ReqController extends Controller
             'data' => 'no data available'
         ]);
     }
+    
     public function apiGetReqMNG($id)
     {
-        $request_ = Req::where('MNG', $id)->where('disaster_reason','=',Null)->where('SPV_STATUS','like','%Approve%')->where('MNG_STATUS','=',null)->get();
+        $request_ = History::where('MNG', $id)->where('SPV_STATUS','like','%Approve%')->where('MNG_STATUS','=',null)->get();
         for ($i=0; $i < count($request_); $i++) { 
-            $request_disaster = Req::where('MNG', $id)->where('disaster_reason','!=',Null)->where('SPV_STATUS','like','%Approve%')->get();
-
+            $req = Req::where('request_code',$request_[$i]->request_code)->get();
             return response()->json([
                 'status' => 200,
-                'data' => $request_,
-                'data disaster' => $request_disaster
+                'data' => $req,
             ]);
         }
         
@@ -56,9 +56,9 @@ class ReqController extends Controller
             'status' => 404,
             'data' => 'no data available'
         ]);
+        
     }
     
-
     /**
      * 
      * DISINI KODINGAN STORE DATA REQUESTS
@@ -176,7 +176,7 @@ class ReqController extends Controller
 
     public function mngStatusReq()
     {
-        $requester = Req::where('MNG_STATUS','like','%Approve%')->get();
+        $requester = History::where('MNG_STATUS','like','%Approve%')->get();
         return response()->json([
             'status' => 200,
             'data' => $requester
