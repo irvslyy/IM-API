@@ -10,12 +10,12 @@
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
 	<link href="" rel="stylesheet" type="text/css">
 
-	<link rel="stylesheet" href="{{asset('css/icons/icomoon/styles.min.css')}}">
-	<link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
-	<link href="{{asset('css/bootstrap_limitless.min.css')}}" rel="stylesheet" type="text/css">
-	<link href="{{asset('css/layout.min.css')}}" rel="stylesheet" type="text/css">
-	<link href="{{asset('css/components.min.css')}}" rel="stylesheet" type="text/css">
-	<link href="{{asset('css/colors.min.css')}}" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="{{asset('public/css/icons/icomoon/styles.min.css')}}">
+	<link href="{{asset('public/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('public/css/bootstrap_limitless.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('public/css/layout.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('public/css/components.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('public/css/colors.min.css')}}" rel="stylesheet" type="text/css">
 
 
 	@yield('css')
@@ -205,15 +205,15 @@
 
 	<!-- Core JS files -->
     
-	<script src="{{asset('js/jquery.min.js')}}"></script>
-	<script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
-    <script src="{{asset('js/apps.js')}}"></script>
-	<script src="{{asset('js/javascript.js')}}"></script>
-	<script src="{{asset('js/npm.js')}}"></script>
+	<script src="{{asset('public/js/jquery.min.js')}}"></script>
+	<script src="{{asset('public/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('public/js/apps.js')}}"></script>
+	<script src="{{asset('public/js/javascript.js')}}"></script>
+	<script src="{{asset('public/js/npm.js')}}"></script>
 
-	<script src="{{asset('js/plugins/core.min.js')}}"></script>
-	<script src="{{asset('js/plugins/effects.min.js')}}"></script>
-	<script src="{{asset('js/plugins/interactions.min.js')}}"></script>
+	<script src="{{asset('public/js/plugins/core.min.js')}}"></script>
+	<script src="{{asset('public/js/plugins/effects.min.js')}}"></script>
+	<script src="{{asset('public/js/plugins/interactions.min.js')}}"></script>
 	@yield('script')
 </body>
 </html>

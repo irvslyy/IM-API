@@ -123,7 +123,7 @@ return [
             ]) : [],
         ],
         
-        'mysql_mplay_heirarky' => [
+        'mysql_mplay_hierarky' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),

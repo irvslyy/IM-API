@@ -80,12 +80,10 @@ Route::middleware('auth:api','throttle:60,1')->group(function () {
         //API MANAGER GET ALL TL
         Route::get('/manager/{id}','UserController@getStaffFromManager');
 
-
         //API USAGE BALANCE
-        Route::get('/usagebalance/{segment}','MasteritemsController@masterItems');
+        Route::get('/usage/{id}','MasteritemsController@usage');
 });
 
 
-
-
+Route::get('/users','MasteritemsController@usageBalance');
 

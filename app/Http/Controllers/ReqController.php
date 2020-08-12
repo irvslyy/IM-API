@@ -81,6 +81,7 @@ class ReqController extends Controller
             $requ->SPV = $req->id_spv;
             $requ->MNG = $req->id_mgm;
             $requ->qty = $req->qty;
+            $requ->unit = $req->unit;
             $requ->status = $req->status;
             $requ->disaster_reason = $req->disaster_reason;
             if ($req->disaster_reason !== null) {

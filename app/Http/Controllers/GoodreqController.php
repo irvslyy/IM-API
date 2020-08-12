@@ -5,15 +5,11 @@ use App\Goodreq;
 use App\Req;
 use App\Stock;
 use App\Items;
-use App\History;
-use App\User;
-use DB;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 
 class GoodreqController extends Controller
 {
-    
     /**
      * DISINI KODINGAN UNTUK MENDAPATKAN
      * DATA PER USERS BERDASARKAN EMPLOYEE NUMBER
@@ -36,10 +32,7 @@ class GoodreqController extends Controller
                 $grf[$i]->item = Items::where('items_code',$grf[$i]->items_code)->select('items_code','product_code','product_name')->groupBy('items_code','product_code','product_name')->get();
             }
         }
-
-        return response()->json([
-            "data" => $grf
-        ]);
+        return ["data" => $grf];
     }
 
     /**
@@ -72,7 +65,8 @@ class GoodreqController extends Controller
             'data' => $Goodreq
         ]);
     }
-
+    
+    
     /**
      * DISINI KODINGAN UPDATE STATUS APPROVAL 
      * DARI SPV SAMPAI MNG BAGIAN GOOD FORM REQUESTS
@@ -97,10 +91,10 @@ class GoodreqController extends Controller
         $requ->SPV_STATUS = $req->SPV_STATUS .' '. date('y-m-d H:i:s');
         $requ->save();
 
-        return response()->json([
-            'status' => 200,
-            'data' => $requ
-        ]);
+        return [
+            "status" => 200,
+            "data" => $requ ,
+        ];
     }
 
     public function apiGrfUpdateMNGSTATUS(Request $req,$id)
@@ -109,10 +103,7 @@ class GoodreqController extends Controller
         $requ->MNG_STATUS = $req->MNG_STATUS .' '. date('y-m-d H:i:s');
         $requ->save();
 
-        return response()->json([
-            'status' => 200,
-            'data' => $requ
-        ]);
+        return ['status' => 200, "data" => $requ];
     }
 
     /**
@@ -126,10 +117,7 @@ class GoodreqController extends Controller
         $updateStatusProses = Goodreq::where('grf_number',$grf_number)->update(['status' => $request->status]);
         $updateStatusProses = Goodreq::where('grf_number',$grf_number)->get();
 
-        return response()->json([
-            'status' => 200,
-            'data' => $updateStatusProses
-        ]);
+        return ["status" => 200, "data" => $updateStatusProses];
     }
     public function MngStatusGrf(Request $request,$wh_code)
     {   
@@ -142,10 +130,7 @@ class GoodreqController extends Controller
            $goodrequest[$i]->item = Req::where('request_code',$goodrequest[$i]->grf_number)->where('wh_code',$wh_code)->get();
         }
         
-        return response()->json([
-            'status' => 200,
-            'data' => $goodrequest
-        ]);
+        return ["data" => $goodrequest];
     }
 
     public function MngStatusAll()
@@ -159,15 +144,12 @@ class GoodreqController extends Controller
            $grf[$i]->item = Req::where('request_code',$grf[$i]->grf_number)->get();
         }
 
-        return response()->json([
-            'status' => 200,
-            'data' => $grf
-        ]);
+        return ['status' => 200, "data" => $grf];
     }
 
     public function MngStatusAllByGnumber($grf_number)
     {
-        $grf = Goodreq::where('grf_number',$grf_number)->where('MNG_STATUS','like','%Approve%')->where('ADMIN_STATUS',null)->get();
+        $grf = Goodreq::where('grf_number',$grf_number)->get();
         for ($i=0; $i < count($grf); $i++) { 
             $grf[$i]->qty = Req::where('request_code',$grf[$i]->grf_number)->sum('qty');
         }
@@ -176,10 +158,7 @@ class GoodreqController extends Controller
            $grf[$i]->item = Req::where('request_code',$grf[$i]->grf_number)->get();
         }
 
-        return response()->json([
-            'status' => 200,
-            'data' => $grf
-        ]);
+        return ['status' => 200, "data" => $grf];
     }
 
     public function UserStatusGrf($id)
@@ -194,10 +173,7 @@ class GoodreqController extends Controller
            $user[$i]->item = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->get();
         }
         
-        return response()->json([
-            'status' => 200,
-            'data' => $user
-        ]);
+        return ["data" => $user];
     }
     
     /**
@@ -212,14 +188,15 @@ class GoodreqController extends Controller
         $Goodreq->status = $request->status;
         $Goodreq->save();
 
-        return response()->json([
-            'status' => 200,
-            'data' => $Goodreq
-        ]);
+        return ['status' => 200,'data' => $Goodreq];
 
     }
-    
 }
+
+
+
+
+
 
 
 
