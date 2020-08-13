@@ -60,7 +60,7 @@ class GoodreqController extends Controller
         if ($req->disaster_reason !== null) {
             $Goodreq->SPV_STATUS = 'Approve';
             $Goodreq->delegate_id = $req->delegate_id;
-        }
+        } 
         $Goodreq->user_id = $req->user_id;
         $Goodreq->SPV = $req->id_spv;
         $Goodreq->MNG = $req->id_mgm;
@@ -70,7 +70,9 @@ class GoodreqController extends Controller
             'status' => 200,
             'data' => $Goodreq
         ]);
+
     }
+    
     
     
     /**
@@ -164,6 +166,20 @@ class GoodreqController extends Controller
         ]);
     }
 
+    public function MngStatusAllDisaster()
+    {
+        $disaster = Goodreq::where('MNG_STATUS','like','%Approve%')->where('ADMIN_STATUS',null)->where('delegate_id','!=',null)->get();
+        for ($i=0; $i < count($disaster); $i++) { 
+            $disaster[$i]->qty = Req::where('request_code',$disaster[$i]->grf_number)->sum('qty');
+        }
+
+        for ($i=0; $i < count($disaster); $i++) { 
+           $disaster[$i]->item = Req::where('request_code',$disaster[$i]->grf_number)->get();
+        }
+
+        return ["disaster" => $disaster];
+    }
+
     public function MngStatusAllByGnumber($grf_number)
     {
         $grf = Goodreq::where('grf_number',$grf_number)->get();
@@ -230,6 +246,28 @@ class GoodreqController extends Controller
         return response()->json([
             'status' => 200,
             'data' => $updateStatusProses
+        ]);
+    }
+    
+    public function userDisaster($id)
+    {
+        $user = Goodreq::where('disaster_reason',$id)->get();
+        $users = User::all();
+        for ($i=0; $i < count($user); $i++) { 
+            $user[$i]->qty = Req::where('request_code',$user[$i]->grf_number)->where('disaster_reason',$id)->where('user_id',$id)->sum('qty');
+        }
+
+        for ($i=0; $i < count($user); $i++) { 
+           $user[$i]->item = Req::where('request_code',$user[$i]->grf_number)->where('disaster_reason',$id)->where('user_id',$id)->get();
+        }
+        
+        for ($i=0; $i < count($users); $i++) { 
+            $user[$i]->user = User::where('id',$id)->get();
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $user
         ]);
     }
 }

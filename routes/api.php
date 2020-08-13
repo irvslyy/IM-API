@@ -52,6 +52,7 @@ Route::post('/register/user','AuthController@register');
         Route::post('/grf/status/mng/{id}','GoodreqController@apiGrfUpdateMNGSTATUS');
         Route::get('/grf/approval/list/{wh_code}','GoodreqController@MngStatusGrf');
         Route::get('/grf/approval/list','GoodreqController@MngStatusAll');
+        Route::get('/grf/approval/list/disaster','GoodreqController@MngStatusAllDisaster');
         Route::post('/goodreq/update/proses/{grf_number}','GoodreqController@UpdatingProsesStatus');
         Route::get('/grf/approval/listing/{request_code}','GoodreqController@MngStatusAllByGnumber');
         Route::post('/request/status/admin/{code}','GoodreqController@apiUpdateADMINSTATUS');
@@ -82,4 +83,7 @@ Route::post('/register/user','AuthController@register');
         Route::get('/usage/{id}','MasteritemsController@usage');
         Route::get('/usagewarehouse/{segment}','MasteritemsController@usagePerWarehouse');
 
+        Route::get('/testing/{segment}','MasteritemsController@Percentage');
 
+
+        Route::get('/userdisaster','GoodreqController@userDisaster');

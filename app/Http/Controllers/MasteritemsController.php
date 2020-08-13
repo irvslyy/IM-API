@@ -61,10 +61,49 @@ class MasteritemsController extends Controller
         }
 
         return response()->json([
-            'data' => $item,
+            $item
         ]);
     }
     
+    public function Percentage(Request $req, $segment)
+    {
+        $item = ItemMaster::where('segment_code',$segment)->get();
+        $stock = Stock::where('wh_code', $req->wh_code)->get();
+        for ($i = 0; $i < count($item); $i++) {
+            $qty = 0;
+            for ($j = 0; $j < count($stock); $j++) {
+                if ($stock[$j]->item->product_name == $item[$i]->product_name) {
+                    $qty++;
+                } 
+            
+            
+            $data = Items::where('product_name', $item[$i]->product_name)->get();
+            $requester =  Req::where('product_name',$item[$i]->product_name)->count();
+            if ($qty != null) {
+                $data->qty = $qty;
+            } 
+            
+                $item[$i]->tersisa = $qty - Req::where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
+                $item[$i]->terpakai = Req::where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
+                $item[$i]->total = $qty;
+
+                $requester = Req::where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
+          
+                $item[$i]->Percentage = ($qty!=0)?($qty * 100) / 1:0;
+
+                $b = 10;
+                $a = 0.1;
+                $result =  $a * 100 /$b;
+            }
+            
+        }
+
+        return response()->json([
+            'testting' => $requester,
+            'data' => $item,
+        ]);
+    }
+
 }
 
 
