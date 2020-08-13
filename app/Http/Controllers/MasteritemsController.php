@@ -35,36 +35,34 @@ class MasteritemsController extends Controller
         return $itemMaster;
     }
 
-    public function usagePerWarehouse(Request $req,$segment_code)
-    {   
-        // $itemMaster = ItemMaster::where('segment_code',$id)->get();
-        // $stock = Stock::where('wh_code',$wh_code)->get();
-        // $stock = Items::all();
-        // for ($i=0; $i < count($itemMaster); $i++) { 
-        //     $itemMaster[$i]->tersisa = Items::where('product_name',$itemMaster[$i]->product_name)->count();
-            
-        //     for ($j=0; $j < count($stock); $j++) { 
-        //         $itemMaster[$i]->qty = Stock::where('items_code',$stock[$j]->id)->where('wh_code',$wh_code)->count();
-        //     }
-
-        // }
-        
-        $item = ItemMaster::where('segment_code',$segment_code)->get();
-        $stock = Stock::where('wh_code',$req->wh_code)->get();
-        for ($i=0; $i < count($item); $i++) { 
+    public function usagePerWarehouse(Request $req,$segment)
+    {
+        $item = ItemMaster::where('segment_code',$segment)->get();
+        $stock = Stock::where('wh_code', $req->wh_code)->get();
+        for ($i = 0; $i < count($item); $i++) {
             $qty = 0;
-            for ($j=0; $j < count($stock); $j++) { 
-                $qty++;
-            }
-            $data = Items:: where('product_name', $item[$i]->product_name)->get();
+            for ($j = 0; $j < count($stock); $j++) {
+                if ($stock[$j]->item->product_name == $item[$i]->product_name) {
+                    $qty++;
+                } 
+            
+            
+            $data = Items::where('product_name', $item[$i]->product_name)->get();
+            $requester =  Req::where('product_name',$item[$i]->product_name)->count();
             if ($qty != null) {
                 $data->qty = $qty;
             } 
-            $item[$i]->tersisa = count($data);
+            
+                $item[$i]->tersisa = $qty - Req::where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
+                $item[$i]->terpakai = Req::where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
+                $item[$i]->total = $qty;
+            }
+            
         }
 
-        return $item;
-
+        return response()->json([
+            'data' => $item,
+        ]);
     }
     
 }

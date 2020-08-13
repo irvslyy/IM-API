@@ -21,7 +21,6 @@ Route::post('/login/user/', 'AuthController@login');
 Route::post('/register/user','AuthController@register');
 
     
-Route::middleware('auth:api','throttle:60,1')->group(function () { 
     
         // API LOGIN DENGAN HIRARKY && API USER GET GRF DAN REQUEST
         Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
@@ -81,8 +80,6 @@ Route::middleware('auth:api','throttle:60,1')->group(function () {
 
         //API USAGE BALANCE
         Route::get('/usage/{id}','MasteritemsController@usage');
-        Route::get('/usagewarehouse/{segment_code}/{wh_code}','MasteritemsController@usagePerWarehouse');
-
-});
+        Route::get('/usagewarehouse/{segment}','MasteritemsController@usagePerWarehouse');
 
 
