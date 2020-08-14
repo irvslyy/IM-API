@@ -23,9 +23,10 @@ class GoodreqController extends Controller
         $Goodreq = Goodreq::where('employee_number','=',$emp)->get();
         return response()->json([
             'status' => 200,
-            'data' => $Goodreq
+            'non disaster' => $Goodreq,
         ]);
     }
+
     public function getGRF()
     {
         $grf = Goodreq::all();
@@ -135,7 +136,7 @@ class GoodreqController extends Controller
     
     public function MngStatusGrf(Request $request,$wh_code)
     {   
-        $goodrequest = History::where('wh_code',$wh_code)->where('STATUS_PACKAGE','!=','Shipping')->where('MNG_STATUS','like','%Approve%')->where('ADMIN_STATUS','like','%Approve%')->get();
+        $goodrequest = History::where('wh_code',$wh_code)->where('STATUS_PACKAGE','!=','Shipping')->where('status','!=','Done')->where('MNG_STATUS','like','%Approve%')->where('ADMIN_STATUS','like','%Approve%')->get();
         for ($i=0; $i < count($goodrequest); $i++) { 
             $goodrequest[$i]->qty = Req::where('request_code',$goodrequest[$i]->request_code)->where('wh_code',$wh_code)->sum('qty');
         }
@@ -206,18 +207,31 @@ class GoodreqController extends Controller
     {
         $user = Goodreq::where('user_id',$id)->get();
 
-        for ($i=0; $i < count($user); $i++) { 
-            $user[$i]->qty = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->sum('qty');
-        }
+        for ($q=0; $q < count($user); $q++) { 
 
-        for ($i=0; $i < count($user); $i++) { 
-           $user[$i]->item = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->get();
+            for ($i=0; $i < count($user); $i++) { 
+                $user[$i]->qty = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->sum('qty');
+            }
+            for ($i=0; $i < count($user); $i++) { 
+            $user[$i]->item = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->get();
+            }
+
+            $users = Goodreq::where('delegate_id',$user[$q]->user_id)->where('disaster_reason','!=',NULL)->get();
+            for ($e=0; $e < count($users); $e++) { 
+                $users[$e]->qty = Req::where('request_code',$users[$e]->grf_number)->where('user_id',$users[$e]->user_id)->sum('qty');
+            }
+            for ($e=0; $e < count($users); $e++) { 
+                $users[$e]->item = Req::where('request_code',$users[$e]->grf_number)->where('user_id',$users[$e]->user_id)->get();
+                $users[$e]->user = User::where('id',$users[$e]->user_id)->get();
+            }
+            
+
+            return response()->json([
+                'status' => 200,
+                'non disaster' => $user,
+                'disaster' => $users
+            ]);
         }
-        
-        return response()->json([
-            'status' => 200,
-            'data' => $user
-        ]);
     }
     
     /**

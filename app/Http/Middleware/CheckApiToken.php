@@ -17,11 +17,15 @@ class CheckApiToken
     {
         if (!in_array($request->headers->get('accept'))) {
             return response()->json(['status' => 200]);
+        } else if (!in_array($request->headers->get('accept'))) {
+            return response()->json(['catch']);
+            
         } else if (!in_array($request->headers->get('accept'), ['application/json', 'Application/Json'])){
             return response()->json(['message' => 'Unauthenticated.'], 401);
         }
 
         return $next($request);           
+
 
         
     }

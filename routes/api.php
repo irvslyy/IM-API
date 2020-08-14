@@ -20,8 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/login/user/', 'AuthController@login');
 Route::post('/register/user','AuthController@register');
 
+Route::middleware('auth:api')->group(function () { 
     
-    
+
         // API LOGIN DENGAN HIRARKY && API USER GET GRF DAN REQUEST
         Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
         Route::get('/grf/user/list/{id}','GoodreqController@UserStatusGrf');
@@ -57,7 +58,6 @@ Route::post('/register/user','AuthController@register');
         Route::get('/grf/approval/listing/{request_code}','GoodreqController@MngStatusAllByGnumber');
         Route::post('/request/status/admin/{code}','GoodreqController@apiUpdateADMINSTATUS');
 
-
         //API Ondelivery
         Route::post('/ondelivery', 'OndeliveryController@store');
 
@@ -82,8 +82,6 @@ Route::post('/register/user','AuthController@register');
         //API USAGE BALANCE
         Route::get('/usage/{id}','MasteritemsController@usage');
         Route::get('/usagewarehouse/{segment}','MasteritemsController@usagePerWarehouse');
-
         Route::get('/testing/{segment}','MasteritemsController@Percentage');
-
-
         Route::get('/userdisaster','GoodreqController@userDisaster');
+});

@@ -43,7 +43,7 @@ class ReqController extends Controller
     
     public function apiGetReqMNG($id)
     {
-        $request_ = History::where('MNG', $id)->where('SPV_STATUS','like','%Approve%')->where('MNG_STATUS','=',null)->get();
+        $request_ = History::where('MNG', $id)->where('SPV_STATUS','like','%Approve%')->where('disaster_reason','=',null)->where('MNG_STATUS','=',null)->get();
         for ($i=0; $i < count($request_); $i++) { 
             $req = Req::where('request_code',$request_[$i]->request_code)->get();
             return response()->json([
