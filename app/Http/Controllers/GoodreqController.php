@@ -59,6 +59,7 @@ class GoodreqController extends Controller
         $Goodreq->disaster_reason = $req->disaster_reason;
         if ($req->disaster_reason !== null) {
             $Goodreq->SPV_STATUS = 'Approve';
+            $Goodreq->MNG_STATUS = 'Approve';
             $Goodreq->delegate_id = $req->delegate_id;
         } 
         $Goodreq->user_id = $req->user_id;
@@ -251,14 +252,14 @@ class GoodreqController extends Controller
     
     public function userDisaster($id)
     {
-        $user = Goodreq::where('disaster_reason',$id)->get();
+        $user = Goodreq::where('delegate_id',$id)->get();
         $users = User::all();
         for ($i=0; $i < count($user); $i++) { 
-            $user[$i]->qty = Req::where('request_code',$user[$i]->grf_number)->where('disaster_reason',$id)->where('user_id',$id)->sum('qty');
+            $user[$i]->qty = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->sum('qty');
         }
 
         for ($i=0; $i < count($user); $i++) { 
-           $user[$i]->item = Req::where('request_code',$user[$i]->grf_number)->where('disaster_reason',$id)->where('user_id',$id)->get();
+           $user[$i]->item = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->get();
         }
         
         for ($i=0; $i < count($users); $i++) { 
