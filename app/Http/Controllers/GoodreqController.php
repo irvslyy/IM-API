@@ -6,6 +6,9 @@ use App\Req;
 use App\Stock;
 use App\Items;
 use App\History;
+use Illuminate\Support\Facades\URL;
+use Spatie\UrlSigner\MD5UrlSigner;
+use Spatie\UrlSigner\UrlSigner;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
@@ -288,6 +291,7 @@ class GoodreqController extends Controller
             'data' => $user
         ]);
     }
+
 
 }
 

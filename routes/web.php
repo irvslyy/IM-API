@@ -1,4 +1,7 @@
 <?php
+use \Illuminate\Support\Facades\URL;
+use Illuminate\Http\Request;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,15 +17,10 @@
 
 
 Auth::routes();
-
-
-    Route::get('/', function () {
-        return view('welcome');
-    });  
+Route::get('/', function () {
+    return view('welcome');
+}); 
 
 Route::get('/','DocsController@welcome');
-
 Route::get('/inventory','DocsController@IM_API')->name('im.api');
-
 Route::get('/home', 'HomeController@index')->name('home');
-
