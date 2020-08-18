@@ -91,7 +91,7 @@ class UserController extends Controller
 
     public function getStaffFromManager($id)
     {
-      $staff = User::where('role','like','%staff%')->where('mng_id',$id)->get();
+      $staff = User::where('role','like','%staff%')->where('mng_id',Crypt::encryptString($id))->get();
       for ($i=0; $i < count($staff); $i++) { 
         return response()->json([
           'status' => 200,

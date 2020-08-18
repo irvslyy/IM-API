@@ -28,16 +28,7 @@ class GoodreqController extends Controller
             'non disaster' => $Goodreq,
         ]);
     }
-    public function encrypter()
-    {
-        $encrypter = Crypt::encryptString(Hash::make(12));
-        $decrypter = Crypt::decryptString($encrypter);
-        return response()->json([
-            'encrypter' => $encrypter,
-            'decrypter' => $decrypter,
-            'real id' => 12
-        ]);
-    }
+
     public function getGRF()
     {
         $grf = Goodreq::all();
@@ -97,6 +88,7 @@ class GoodreqController extends Controller
     public function grfUpdate(Request $request,$id)
     {
         $Goodreq = History::where('request_code',Crypt::encryptString(Hash::make($id)))->first();
+        
         $Goodreq->STATUS_PACKAGE = $request->status;
         $Goodreq->save();
 
@@ -277,18 +269,18 @@ class GoodreqController extends Controller
     
     public function userDisaster($id)
     {
-        $user = Goodreq::where('delegate_id',Crypt::encryptString(hash($id)))->get();
+        $user = Goodreq::where('delegate_id',Crypt::encryptString(hash(Crypt::encryptString($id))))->get();
         $users = User::all(); 
         for ($i=0; $i < count($user); $i++) { 
-            $user[$i]->qty = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->sum('qty');
+            $user[$i]->qty = Req::where('request_code',$user[$i]->grf_number)->where('user_id',Crypt::encryptString($id))->sum('qty');
         }
 
         for ($i=0; $i < count($user); $i++) { 
-           $user[$i]->item = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->get();
+           $user[$i]->item = Req::where('request_code',$user[$i]->grf_number)->where('user_id',Crypt::encryptString($id))->get();
         }
         
         for ($i=0; $i < count($users); $i++) { 
-            $user[$i]->user = User::where('id',$id)->get();
+            $user[$i]->user = User::where('id',Crypt::encryptString($id))->get();
         }
 
         return response()->json([

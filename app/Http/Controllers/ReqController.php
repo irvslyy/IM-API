@@ -34,7 +34,7 @@ class ReqController extends Controller
                 'status' => 200,
                 'data' => $req
             ]); 
-        }
+        } 
         return response()->json([
             'status' => 404,
             'data' => 'no data available'
