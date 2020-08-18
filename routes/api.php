@@ -20,10 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/login/user/', 'AuthController@login');
 Route::post('/register/user','AuthController@register');
 
-Route::middleware('throttle:30,2')->group(function (){
-    
-});
-
 Route::middleware('auth:api')->group(function () { 
     
 
@@ -88,6 +84,10 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/usagewarehouse/{segment}','MasteritemsController@usagePerWarehouse');
         Route::get('/testing/{segment}','MasteritemsController@Percentage');
         Route::get('/userdisaster','GoodreqController@userDisaster');
+        
+        Route::get('/update/token/{id}','UserController@updateToken');
+
+        Route::get('/post/token','UserController@PostToken'); 
 });
 
 

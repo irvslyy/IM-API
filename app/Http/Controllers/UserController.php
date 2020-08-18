@@ -105,7 +105,24 @@ class UserController extends Controller
       ]);
     }
 
+    public function updateToken(Request $request ,$id)
+    {
+      $updateToken = User::where('id',$id)->update(['token' => $request->token]);
+      $user = User::find($id);
+      return response()->json([
+        'status' => 200, 
+        'data' => $user
+      ]);
+    }
 
+    public function PostToken(Request $request,$id)
+    {
+      $postToken = User::find($id);
+      $postToken->token = $request->token;
+      $postToken->save();
+
+      return response(['status' => 200,'data' => $postToken]);
+    }
 }
 
 

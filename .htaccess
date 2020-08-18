@@ -1,17 +1,17 @@
-# Prevent Directory Listing
+# jagain Directory Listing
 <IfModule autoindex>
 	IndexIgnore *
 </IfModule>
 
 <IfModule mod_rewrite.c>
-    #Prevent directory listing
+    #jagain directory listing
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
 
     RewriteEngine On
 
-    # Prevent Direct Access to Protected Files
+    # jagain Direct Access ke Protected Files
     <FilesMatch "(?i)(^artisan$|\.env|\.log)">
         # Apache 2.2 syntax
         <IfModule !mod_authz_core.c>
@@ -24,10 +24,10 @@
         </IfModule>
     </FilesMatch>
 
-    # Prevent Direct Access To Protected Folders
+    # jagain Direct Access ke Protected Folders
     RewriteRule ^(app|bootstrap|config|database|overrides|resources|routes|storage|tests)/(.*) / [L,R=301]
 
-    # Prevent Direct Access To modules/vendor Folders Except Assets
+    # jagain Direct Access To modules/vendor Folders Except Assets
     RewriteRule ^(modules|vendor)/(.*)\.((?!ico|gif|jpg|jpeg|png|js|css|less|sass|font|woff|woff2|eot|ttf|svg).)*$ / [L,R=301]
 
     # Handle Authorization Header

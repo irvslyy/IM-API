@@ -47,6 +47,8 @@ class GoodreqController extends Controller
         ]);
     }
 
+
+
     /**
      * 
      * DISINI KODINGAN UNTUK STORE
