@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Spatie\UrlSigner\MD5UrlSigner;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -26,8 +26,5 @@ class HomeController extends Controller
     {
         return view('api_docs');
     }
-    public function welcome()
-    {
-        return view('welcome');
-    }
+    
 }

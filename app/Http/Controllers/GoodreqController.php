@@ -6,6 +6,8 @@ use App\Req;
 use App\Stock;
 use App\Items;
 use App\History;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 
@@ -20,13 +22,22 @@ class GoodreqController extends Controller
     */
     public function GRF($emp)
     {
-        $Goodreq = Goodreq::where('employee_number','=',$emp)->get();
+        $Goodreq = Goodreq::where('employee_number','=',Crypt::encryptString(Hash::make($emp)))->get();        
         return response()->json([
             'status' => 200,
             'non disaster' => $Goodreq,
         ]);
     }
-
+    public function encrypter()
+    {
+        $encrypter = Crypt::encryptString(Hash::make(12));
+        $decrypter = Crypt::decryptString($encrypter);
+        return response()->json([
+            'encrypter' => $encrypter,
+            'decrypter' => $decrypter,
+            'real id' => 12
+        ]);
+    }
     public function getGRF()
     {
         $grf = Goodreq::all();
@@ -85,7 +96,7 @@ class GoodreqController extends Controller
     */
     public function grfUpdate(Request $request,$id)
     {
-        $Goodreq = History::where('request_code',$id)->first();
+        $Goodreq = History::where('request_code',Crypt::encryptString(Hash::make($id)))->first();
         $Goodreq->STATUS_PACKAGE = $request->status;
         $Goodreq->save();
 
@@ -266,8 +277,8 @@ class GoodreqController extends Controller
     
     public function userDisaster($id)
     {
-        $user = Goodreq::where('delegate_id',$id)->get();
-        $users = User::all();
+        $user = Goodreq::where('delegate_id',Crypt::encryptString(hash($id)))->get();
+        $users = User::all(); 
         for ($i=0; $i < count($user); $i++) { 
             $user[$i]->qty = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->sum('qty');
         }
@@ -285,6 +296,7 @@ class GoodreqController extends Controller
             'data' => $user
         ]);
     }
+
 }
 
 

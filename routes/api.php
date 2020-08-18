@@ -20,6 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/login/user/', 'AuthController@login');
 Route::post('/register/user','AuthController@register');
 
+Route::get('/encrypter','GoodreqController@encrypter');
+
 Route::middleware('auth:api')->group(function () { 
     
 

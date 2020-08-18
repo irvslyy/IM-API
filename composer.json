@@ -15,6 +15,7 @@
         "laravel/passport": "^9.3",
         "laravel/tinker": "^2.0",
         "spatie/laravel-cors": "^1.6",
+        "spatie/laravel-url-signer": "^2.5",
         "webpatser/laravel-uuid": "^3.0",
         "yoeunes/toastr": "^1.2"
     },

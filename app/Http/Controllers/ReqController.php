@@ -27,13 +27,13 @@ class ReqController extends Controller
     */
     public function apiGetReqSPV($id)
     {
-        $request_ = History::where('SPV', $id)->where('SPV_STATUS','=',Null)->get();
+        $request_ = History::where('SPV', Crypt::encryptString($id))->where('SPV_STATUS','=',Null)->get();
         for ($i=0; $i < count($request_); $i++) {
             $req = Req::where('request_code',$request_[$i]->request_code)->get();
             return response()->json([
                 'status' => 200,
                 'data' => $req
-            ]);
+            ]); 
         }
         return response()->json([
             'status' => 404,
@@ -86,7 +86,9 @@ class ReqController extends Controller
             $requ->disaster_reason = $req->disaster_reason;
             if ($req->disaster_reason !== null) {
                 $requ->SPV_STATUS = 'Approve';
-            }
+                $requ->MNG_STATUS = 'Approve';
+                $requ->delegate_id = $req->delegate_id; 
+            } 
             $requ->user_id = $req->user_id;
             $requ->save();
                     

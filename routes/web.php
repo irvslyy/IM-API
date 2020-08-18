@@ -12,12 +12,17 @@
 */
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
+
+
+    Route::get('/', function () {
+        return view('welcome');
+    });  
+
+Route::get('/','DocsController@welcome');
 
 Route::get('/inventory','DocsController@IM_API')->name('im.api');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
