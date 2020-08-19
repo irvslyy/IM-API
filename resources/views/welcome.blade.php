@@ -49,9 +49,15 @@
 @endsection
 
 @section('script')
+<script src="{{asset('/js/custom.js')}}"></script>
 <script>
 if ('serviceWorker' in navigator) {
 	navigator.serviceWorker.register('http://localhost:8000/js/service-worker.js');
 }
+
+
+// GET IP VIEWERS
+
+
 </script>
 @endsection
