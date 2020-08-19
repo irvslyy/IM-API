@@ -65,22 +65,6 @@ class MasteritemsController extends Controller
         ]);
     }
 
-    public function saveForPercentage(Request $request)
-    {
-        $warehouse = Stock::where('wh_code',$request->wh_code)->get();
-        for ($i=0; $i < count($warehouse); $i++) { 
-            $items = Items::where('id',$request->id)->first();
-            if ($warehouse[$i]->id == $warehouse[$i]->name) {
-                return response()->json($warehouse);
-            } else if($items->request || $warehouse[$i]->id) {
-                return response()->json(['status' => 303,'message' => 'Disabled']);
-            } else {
-                return response()->json(['status' => 404, 'message' => 'warehouse code not found']);
-            }
-        }
-        
-    }
-
     public function Percentage(Request $req, $segment)
     {
         $item = ItemMaster::where('segment_code',$segment)->get();
