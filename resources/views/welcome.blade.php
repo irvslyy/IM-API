@@ -50,11 +50,8 @@
 
 @section('script')
 <script>
-	// var test = prompt("username");
-	// if (test == 'root') {
-	// 	console.log("y, ur root");
-	// } else {
-	// 	window.location.href = "http://mercusuar.uzone.id";
-	// }
+if ('serviceWorker' in navigator) {
+	navigator.serviceWorker.register('http://localhost:8000/js/service-worker.js');
+}
 </script>
 @endsection

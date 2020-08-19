@@ -123,6 +123,36 @@ class UserController extends Controller
 
       return response(['status' => 200,'data' => $postToken]);
     }
+
+    public function SupervisorToken(Request $request)
+    {
+      $users = User::where('id',$id)->where('role','like','%supervisor') ->select('name','email','token') ->groupBy('name','email','token') ->get();
+      for ($i=0; $i < count($users); $i++) { 
+        return response()->json([
+          'status' => 200,
+          'data' => $users
+        ]);
+      }
+      return response()->json([
+        'status' => 200,
+        'message' => 'supervisor id not found'
+      ]);
+    }
+
+    public function ManagerToken(Request $request,$id)
+    {
+      $users = User::where('id',$id)->where('role','like','%manager') ->select('name','email','token') ->groupBy('name','email','token') ->get();
+      for ($i=0; $i < count($users); $i++) { 
+        return response()->json([
+          'status' => 200,
+          'data' => $users
+        ]);
+      }
+      return response()->json([
+        'status' => 200,
+        'message' => 'manager id not found'
+      ]);
+    }
 }
 
 

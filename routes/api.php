@@ -22,7 +22,6 @@ Route::post('/register/user','AuthController@register');
 
 Route::middleware('auth:api')->group(function () { 
     
-
         // API LOGIN DENGAN HIRARKY && API USER GET GRF DAN REQUEST
         Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
         Route::get('/grf/user/list/{id}','GoodreqController@UserStatusGrf');
@@ -85,10 +84,11 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/testing/{segment}','MasteritemsController@Percentage');
         Route::get('/userdisaster','GoodreqController@userDisaster');
         
+        //API TOKEN USERS
         Route::get('/update/token/{id}','UserController@updateToken');
-
         Route::get('/post/token','UserController@PostToken'); 
+        Route::get('/get/supervisor/token/{id}','UserController@SupervisorToken');
+        Route::get('/get/manager/token/{id}','UserController@ManagerToken');        
 });
-
 
 

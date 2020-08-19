@@ -23,7 +23,7 @@ class StockController extends Controller
     public function StockApi(Request $req)
     {
         $item = ItemMaster::all();
-        $stock = Stock::where('wh_code', $req->wh_code)->get();
+        $stock = Stock::where('wh_code', $req->wh_code)->where('status','like','%True%')->get();
         for ($i = 0; $i < count($item); $i++) {
             $qty = 0;
             for ($j = 0; $j < count($stock); $j++) {

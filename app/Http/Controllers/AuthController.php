@@ -70,4 +70,15 @@ class AuthController extends Controller
         return response()->json(['success'=>$success], $this->successStatus);
     }
 
+    public function ServiceWorkerAuthentication()
+    {
+        $service = $request->all();
+        $service['username'] = $input['username'];
+        $users = User::create($input);
+        $serviceWorker['email'] = $users->email;
+        $serviceWorker['address'] = $users->address;
+
+        return response()->json(['success' => $success], $this->successStatus);
+    }
+
 }
