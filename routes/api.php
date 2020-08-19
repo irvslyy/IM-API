@@ -91,4 +91,5 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/get/manager/token/{id}','UserController@ManagerToken');        
 });
 
+        Route::get('/stock/warehouse','MasteritemsController@saveForPercentage');
 
