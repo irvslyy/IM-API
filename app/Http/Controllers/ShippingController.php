@@ -25,4 +25,13 @@ class ShippingController extends Controller
             'data' => $shipping
         ]);
     }
+
+    public function shippingUpdateStatus(Request $request)
+    {
+        $shipping = Shipping::where('shipping_number',$shipping_number)->update(['status' => $request->status]);
+        return response()->json([
+            'status' => 200,
+            'data' => $shipping
+        ]);
+    }
 }

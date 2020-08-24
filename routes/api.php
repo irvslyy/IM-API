@@ -68,6 +68,7 @@ Route::middleware('auth:api')->group(function () {
 
         //API SHIPPING  
         Route::get('/shipping/{shipping_number}','ShippingController@shippingGetNumber');
+        Route::post('/shipping/update/{shipping_number}','ShippingController@shippingUpdateStatus');
 
         //APPROVE TL,SPV,MNG
         Route::get('/approve/spv/{id}', 'ReqController@apiGetReqSPV');
