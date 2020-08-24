@@ -8,5 +8,5 @@ class Shipping extends Model
 {
     protected $table = 'Shipping';
     protected $connection = 'mysql_mplay_logistic';
-    public $timestamps = false;
+    protected $fillable = ['user_id','shipping_number','req_code','grf_number','status'];
 }

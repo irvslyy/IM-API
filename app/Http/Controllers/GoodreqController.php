@@ -55,6 +55,7 @@ class GoodreqController extends Controller
      * GOOD FORM REQUESTS
      * 
     */
+
     public function store(Request $req)
     {
         $Goodreq = new Goodreq;
@@ -75,6 +76,13 @@ class GoodreqController extends Controller
         $Goodreq->MNG = $req->id_mgm;
         $Goodreq->save();
 
+        $shipping = new Shipping;
+        $shipping->shipping_number = 'Shipping' . '-' . mt_rand(100,1000);
+        $shipping->user_id = 1;
+        $shipping->grf_number = $Goodreq->grf_number;
+        $shipping->req_code = $Goodreq->grf_number;
+        $shipping->save();
+        
         return response()->json([
             'status' => 200,
             'data' => $Goodreq
