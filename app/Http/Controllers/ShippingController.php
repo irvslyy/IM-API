@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use App\Shipping;
-use App\Requests;
 use Illuminate\Http\Request;
 
 class ShippingController extends Controller
@@ -34,4 +33,5 @@ class ShippingController extends Controller
             'data' => $shipping
         ]);
     }
+
 }
