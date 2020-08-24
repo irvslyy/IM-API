@@ -66,6 +66,9 @@ Route::middleware('auth:api')->group(function () {
         //API SEGMENT
         Route::get('/wh/{regional}', 'WarehouseController@ApiWarehouse');
 
+        //API SHIPPING  
+        Route::get('/shipping/{shipping_number}','ShippingController@shippingGetNumber');
+
         //APPROVE TL,SPV,MNG
         Route::get('/approve/spv/{id}', 'ReqController@apiGetReqSPV');
         Route::get('/approve/mng/{id}', 'ReqController@apiGetReqMNG');

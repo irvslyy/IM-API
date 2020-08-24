@@ -16,4 +16,13 @@ class ShippingController extends Controller
         // $shipping->req_code = $Goodreq->grf_number;
         // $shipping->save();
     }
+
+    public function shippingGetNumber($shipping_number)
+    {
+        $shipping = Shipping::where('shipping_number',$shipping_number)->first();
+        return response()->json([
+            'status' => 200,
+            'data' => $shipping
+        ]);
+    }
 }
