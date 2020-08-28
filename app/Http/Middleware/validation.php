@@ -19,6 +19,8 @@ class validation
             return response()->json(['status' => 200]);
         } else if(in_array($request->header->get('accept'))) {
             return response()->json(['catch']);
+        } else {
+            return response()->json(['status' => 'message']);
         }
 
         return $next($request);
