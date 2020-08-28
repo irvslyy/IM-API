@@ -20,7 +20,6 @@ class validation
         } else if(in_array($request->header->get('accept'))) {
             return response()->json(['catch']);
         }
-        
 
         return $next($request);
     }
