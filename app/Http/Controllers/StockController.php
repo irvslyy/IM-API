@@ -54,4 +54,5 @@ class StockController extends Controller
             'data' => $item
         ]);
     }
+
 }

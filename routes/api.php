@@ -20,11 +20,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/login/user/', 'AuthController@login');
 Route::post('/register/user','AuthController@register');
 
+
 Route::middleware('auth:api')->group(function () { 
     
         // API LOGIN DENGAN HIRARKY && API USER GET GRF DAN REQUEST
         Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
-        Route::get('/grf/user/list/{id}','GoodreqController@UserStatusGrf');
 
         //API STOCK
         Route::get('/stock', 'StockController@StockApi');
@@ -45,7 +45,8 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/goodreq/employee/{emp}','GoodreqController@GRF');
         Route::get('/goodrequest','GoodreqController@getGRF');
         Route::post('/goodReq/', 'GoodreqController@store');
-        Route::post('/goodReq/update/{id}','GoodreqController@grfUpdate');
+        Route::post('/goodReq/update/{id}','GoodreqControler@grfUpdate');
+        Route::get('/grf/user/list/{id}','GoodreqController@UserStatusGrf');
 
         // Api update status approval TL,SPV,MNG,ADMIN
         Route::post('/grf/status/spv/{id}','GoodreqController@apiGrfUpdateSPVSTATUS');
@@ -73,7 +74,6 @@ Route::middleware('auth:api')->group(function () {
         //APPROVE TL,SPV,MNG
         Route::get('/approve/spv/{id}', 'ReqController@apiGetReqSPV');
         Route::get('/approve/mng/{id}', 'ReqController@apiGetReqMNG');
-
         //API HISTORY APPROVAL
         Route::get('/history/approval','HistoryController@History');
         Route::post('/history/approval/post','HistoryController@History_store');
@@ -93,5 +93,8 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/post/token','UserController@PostToken'); 
         Route::get('/get/supervisor/token/{id}','UserController@SupervisorToken');
         Route::get('/get/manager/token/{id}','UserController@ManagerToken');        
+
+        Route::get('/survey/{id_user}','AbsenController@surveyScore')->name('api.surveyScore.by.id');
+        Route::post('/survey/peruser/{id_user}','AbsenController@surveyPost')->name('api.survey.post');
 });
 

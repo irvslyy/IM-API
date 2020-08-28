@@ -221,35 +221,27 @@ class GoodreqController extends Controller
 
     public function UserStatusGrf($id)
     {
-        $user = Goodreq::where('user_id',$id)->get();
 
-        for ($q=0; $q < count($user); $q++) { 
-
-            for ($i=0; $i < count($user); $i++) { 
-                $user[$i]->qty = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->sum('qty');
-            }
-            for ($i=0; $i < count($user); $i++) { 
-            $user[$i]->item = Req::where('request_code',$user[$i]->grf_number)->where('user_id',$id)->get();
-            }
-
-            $users = Goodreq::where('delegate_id',$user[$q]->user_id)->where('disaster_reason','!=',NULL)->get();
-            for ($e=0; $e < count($users); $e++) { 
-                $users[$e]->qty = Req::where('request_code',$users[$e]->grf_number)->where('user_id',$users[$e]->user_id)->sum('qty');
-            }
-            for ($e=0; $e < count($users); $e++) { 
-                $users[$e]->item = Req::where('request_code',$users[$e]->grf_number)->where('user_id',$users[$e]->user_id)->get();
-                $users[$e]->user = User::where('id',$users[$e]->user_id)->get();
-            }
-            
-
-            return response()->json([
-                'status' => 200,
-                'non disaster' => $user,
-                'disaster' => $users
-            ]);
+        $users_disaster = Goodreq::where('delegate_id',$id)->get();
+        for ($i=0; $i < count($users_disaster); $i++) { 
+            $users_disaster[$i]->item = Req::where('request_code',$users_disaster[$i]->grf_number)->get();
+            $users_disaster[$i]->user = User::where('id',$users_disaster[$i]->user_id)->get();
         }
+
+        $user_ndisaster = Goodreq::where('user_id',$id)->get();
+        for ($e=0; $e < count($user_ndisaster); $e++) { 
+            $user_ndisaster[$e]->qty = Req::where('request_code',$user_ndisaster[$e]->grf_number)->where('user_id',$id)->sum('qty');
+            $user_ndisaster[$e]->item = Req::where('request_code',$user_ndisaster[$e]->grf_number)->get();
+            $user_ndisaster[$e]->user = User::where('id',$user_ndisaster[$e]->user_id)->get();
+        }
+            
+        return response()->json([
+            'status' => 200,
+            'non disaster' => $user_ndisaster,
+            'disaster' => $users_disaster,
+        ]);
     }
-    
+
     /**
      * DISINI KODINGAN UPDATE STATUS BARANG 
      * DARI SETELAH APPROVAL SAMPAI BARANG
