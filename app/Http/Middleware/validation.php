@@ -22,7 +22,7 @@ class validation
         } else {
             return response()->json(['status' => 'message']);
         }
-        // this code....
+        
         return $next($request);
     }
 }
