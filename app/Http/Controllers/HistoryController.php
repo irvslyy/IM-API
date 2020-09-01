@@ -34,4 +34,44 @@ class HistoryController extends Controller
 
         return ['status' => 200, 'data' => $history];
     }
+
+    public function historyADMIN()
+    {
+        $history = History::all();
+        $request = Req::all();
+        $itemMaster = ItemMaster::all();
+
+        for ($i=0; $i < count($history); $i++) { 
+            if ($history[$i]->ADMIN_STATUS == 'Approve') {
+                if (!$history[$i]->tersisa == 0) {
+                    $history[$i]->tersisa = $qty - Req::where('request_code',$history[$i]->request_code)->where('history_id',$history[$i]->id)->get();
+                }
+
+                if (!$history[$i]->terpakai == 0) {
+                    $history[$i]->terpakai = Req::where('ADMIN_STATUS','like','%Approve%')->where('request_code',$history[$i]->request_code)->where('history_id',$history[$i]->id)->get();
+                }
+
+                if (!$history[$i]->total == 0) {
+                    $history[$i]->total = $qty;
+                }
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'accept',
+                    'data' => $history,
+                    'jumlah data admin approve' => count($history),
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 500,
+                    'message' => 'failed',
+                    'data' => NULL,
+                ]);
+            }
+            
+        }
+
+    }
+
+
 }

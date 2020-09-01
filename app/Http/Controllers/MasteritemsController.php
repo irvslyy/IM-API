@@ -31,7 +31,6 @@ class MasteritemsController extends Controller
                 $itemMaster[$i]->total = Items::where('product_name',$itemMaster[$i]->product_name)->count(); 
             }
         }
-
         return $itemMaster;
     }
     
@@ -49,20 +48,62 @@ class MasteritemsController extends Controller
                         $qty++;
                     } 
                     
+                    
                     $data = Items::where('product_name', $item[$i]->product_name)->get();
                     $requester =  Req::where('product_name',$item[$i]->product_name)->count();
                     if ($qty != null) {
                         $data->qty = $qty;
                     } 
                     
-                    $item[$i]->tersisa = $qty - Req::where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->where('ADMIN_STATUS','=','Approve')->count();
-                    $item[$i]->terpakai = Req::where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->where('ADMIN_STATUS','=','Approve')->count();
-                    $item[$i]->total = $qty;       
+                        $item[$i]->tersisa = $qty - Req::where('ADMIN_STATUS','like','%Approve%')->where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
+                        $item[$i]->terpakai = Req::where('ADMIN_STATUS','like','%Approve%')->where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
+                        $item[$i]->total = $qty;
+                    
             }
         }
 
         return $item;
     }
+
+    public function check(Request $request, $segment)
+    {
+        $stock = Stock::where('wh_code',$request->wh_code)->get();
+        $itemMaster = ItemMaster::where('segment_code',$segment)->get();
+        $request = Req::all();
+        $history = History::where('ADMIN_STATUS','like','%Approve%')->get();
+
+        for ($i=0; $i < count($itemMaster); $i++) { 
+            $qty = 0;
+            for ($j=0; $j < count($stock); $j++) { 
+                if ($stock[$j]->item->product_name == $itemMaster[$i]->product_name) {
+                    $qty++;
+                }
+
+                $data = Items::where('product_name', $itemMaster[$i]->product_name)->get();
+                if ($qty != null) {
+                    $data->qty = $qty;
+                }
+                
+                for ($k=0; $k < count($history); $k++) { 
+                    if ($history[$k]->ADMIN_STATUS == 'Approve' || $history[$k]->ADMIN_STATUS == NULL) {
+                        $itemMaster[$i]->terpakai = Req::where('product_name', $itemMaster[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
+                        $itemMaster[$i]->tersisa = $qty - Req::where('product_name', $itemMaster[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
+                        $itemMaster[$i]->total = $qty;
+                    } else {
+                        $itemMaster[$i]->terpakai = Req::where('product_name', $itemMaster[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
+                        $itemMaster[$i]->tersisa = $qty - Req::where('product_name', $itemMaster[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
+                        $itemMaster[$i]->total = $qty;
+                    }
+                     
+                }
+          
+
+            }
+        }
+
+        return $itemMaster;
+    }
+
 
 
 }
