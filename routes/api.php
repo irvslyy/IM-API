@@ -85,8 +85,6 @@ Route::middleware('auth:api')->group(function () {
         //API USAGE BALANCE
         Route::get('/usage/{id}','MasteritemsController@usage');
         Route::get('/usagewarehouse/{segment}','MasteritemsController@usagePerWarehouse');
-        Route::get('/testing/{segment}','MasteritemsController@Percentage');
-        Route::get('/userdisaster','GoodreqController@userDisaster');
         
         //API TOKEN USERS
         Route::get('/update/token/{id}','UserController@updateToken');
