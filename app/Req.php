@@ -32,10 +32,12 @@ class Req extends Model
     {
         return $this->belongsTo('App\GoodReq','id');
     }
+
     public function history()
     {
-        return $this->belongsTo('App\History','id');
+        return $this->belongsTo('App\History','request_code');
     }
+
     public function itemmaster()
     {
         return $this->belongsTo('App\ItemMaster','id');
