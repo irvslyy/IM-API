@@ -53,8 +53,8 @@ class MasteritemsController extends Controller
                     $requester =  Req::where('product_name',$item[$i]->product_name)->count();
                     if ($qty != null) {
                         $data->qty = $qty;
-                    } 
-                    
+                    }
+
                         $item[$i]->tersisa = $qty - Req::where('ADMIN_STATUS','like','%Approve%')->where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
                         $item[$i]->terpakai = Req::where('ADMIN_STATUS','like','%Approve%')->where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
                         $item[$i]->total = $qty;
@@ -83,19 +83,9 @@ class MasteritemsController extends Controller
                     $data->qty = $qty;
                 }
 
-                // for ($r=0; $r < count($request); $r++) { 
-                //     $history = Req::where('product_name', $itemMaster[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->get();
-                //     for ($h=0; $h < count($history); $h++) { 
-                //         $itemMaster[$i]->tersisa = $qty - History::where('request_code',$history[$h]->request_code)->where('ADMIN_STATUS','like','Approve')->count();
-                //         $itemMaster[$i]->terpakai = History::where('request_code',$history[$h]->request_code)->where('ADMIN_STATUS','like','Approve')->count();
-                //         $itemMaster[$i]->total = $qty;
-                //     }
-                // }
-
                 $itemMaster[$i]->tersisa = $qty - Req::where('product_name', $itemMaster[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
                 $itemMaster[$i]->terpakai = Req::where('product_name', $itemMaster[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
                 $itemMaster[$i]->total = $qty;
-
             }
         }
 
@@ -104,34 +94,32 @@ class MasteritemsController extends Controller
 
     public function checkArray($id)
     {
-        $stock = Stock::all();
-        $itemMaster = ItemMaster::all();
-        $request = Req::all();
-       
+      $itemMaster = ItemMaster::where('segment_code',$id)->get();
+       $history = History::where('ADMIN_STATUS','like','%Approve%')->get();
 
-        for ($i=0; $i < count($request); $i++) { 
-           $history = History::all();
-           $item = Items::all();
-           for ($j=0; $j < count($history); $j++) { 
-                if ($history[$j]->ADMIN_STATUS == 'Approve') {
-                    $request[$i]->history = History::where('request_code',$id)->get();
-                    return response()->json([
-                        'status' => 200,
-                        'request item' => count($request)
-                    ]);
+        for ($i=0; $i < count($itemMaster); $i++) { 
+            $items = Items::all();
+           
+            for ($e=0; $e < count($items); $e++) { 
+
+                $request = Req::where('product_name',$itemMaster[$i]->product_name)->req;
+                for ($r=0; $r < count($request); $r++) { 
+                    $request[$r] = History::where('id',$request[$r]->request_code)->count();
+                    if ($request[$r]->history_id == null) {
+                        $request[$r]->history = Req::where('request_code')->where('history_id',$history[$r]->id)->get();
+                    } else {
+                        return response()->json(['status' => 200, 'message' => 'not send ...']);
+                    }
                 }
-           }
+
+                $itemMaster[$i]->tersisa = Items::where('product_name',$itemMaster[$i]->product_name)->count() - Req::where('product_name',$itemMaster[$i]->product_name)->count();     
+                $itemMaster[$i]->terpakai = Req::where('product_name',$itemMaster[$i]->product_name)->count(); 
+                $itemMaster[$i]->total = Items::where('product_name',$itemMaster[$i]->product_name)->count();
+                
+            }
         }
-
-        // $history = History::find($id)->req;
-        // for ($i=0; $i < count($history); $i++) { 
-        //     $history[$i]->count = History::where('ADMIN_STATUS','like','%Approve%')->count();
-        // }
-        // return response()->json([
-        //     'status' => 200,
-        //     'request item' => $history
-        // ]);
-
+        
+        return $itemMaster;
     }
 
     

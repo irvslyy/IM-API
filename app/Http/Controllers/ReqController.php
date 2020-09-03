@@ -91,11 +91,8 @@ class ReqController extends Controller
             } 
             $requ->user_id = $req->user_id;
             $requ->save();
+            
 
-            // $history = new History;
-            // $history->id = $requ->history_id;
-            // $history->save();
-                    
             return response()->json([
                 'status' => 200,
                 'sisa stock' =>  Count($Items),

@@ -13,4 +13,5 @@ class History extends Model
     {
         return $this->hasMany('App\Req');
     }
+
 }
