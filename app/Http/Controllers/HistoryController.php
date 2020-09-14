@@ -8,20 +8,26 @@ use App\Goodreq;
 use App\Items;
 use App\Stock;
 use App\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 
 class HistoryController extends Controller
 {
     public function History()
     {
-        $history = History::all();
+        $history = Cache::remember('history', 3, function(){
+            return History::HistoryData()->get();
+        }); 
+
         return ['status' => 200, 'data' => $history];
     }
+
     public function History_users($request_code)
     {
         $history = History::where('request_code',$request_code)->get();
         return ['status' => 200, 'data' => $history];
     }
+
     public function History_store(Request $request)
     {
         $history = new History;

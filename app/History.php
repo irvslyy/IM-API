@@ -18,4 +18,9 @@ class History extends Model
     {
         $query->where('MNG_STATUS','LIKE','%Approve%');
     }
+
+    public function scopeHistoryData($query)
+    {
+        $query->where('request_code','!=',NULL);
+    }
 }
