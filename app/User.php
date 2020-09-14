@@ -44,4 +44,9 @@ class User extends Authenticatable
     public function user() {
         return $this->hasMany('App\User','parent_id','id');
     }
+
+    public function scopeUserData($query)
+    {
+        $query->where('name','!=',NULL);
+    }
 }

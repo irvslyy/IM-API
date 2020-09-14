@@ -12,6 +12,7 @@ use Spatie\UrlSigner\UrlSigner;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 
 class GoodreqController extends Controller
@@ -34,7 +35,10 @@ class GoodreqController extends Controller
 
     public function getGRF()
     {
-        $grf = Goodreq::all();
+        $grf = Cache::remember('goodrequest', 3, function (){
+            return Goodreq::goodRequestData()->get();
+        });
+
         for ($i=0; $i < count($grf); $i++) { 
             for ($j=0; $j < count($grf); $j++) { 
                 $grf[$i]->item = Items::where('items_code',$grf[$i]->items_code)->select('items_code','product_code','product_name')->groupBy('items_code','product_code','product_name')->get();
@@ -275,7 +279,12 @@ class GoodreqController extends Controller
     public function userDisaster($id)
     {
         $user = Goodreq::where('delegate_id',Crypt::encryptString(hash(Crypt::encryptString($id))))->get();
-        $users = User::all(); 
+
+        $users = Cache::remember('user', 3, function (){
+            return User::UserData()->get(); 
+        });
+
+        
         for ($i=0; $i < count($user); $i++) { 
             $user[$i]->qty = Req::where('request_code',$user[$i]->grf_number)->where('user_id',Crypt::encryptString($id))->sum('qty');
         }
