@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,4 +28,10 @@ class Stock extends Model
     {
         return $this->belongsTo('App\Segment', 'segment_code');
     }
+
+    public function scopestockTrue($query)
+    {
+        $query->where('wh_code', $req->wh_code)->where('status','like','%True%');
+    }
+
 }

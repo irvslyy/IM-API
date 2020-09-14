@@ -1,34 +1,9 @@
-# jagain Directory Listing
-<IfModule autoindex>
-	IndexIgnore *
-</IfModule>
-
 <IfModule mod_rewrite.c>
-    #jagain directory listing
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
-
+    
     RewriteEngine On
-
-    # jagain Direct Access ke Protected Files
-    <FilesMatch "(?i)(^artisan$|\.env|\.log)">
-        # Apache 2.2 syntax
-        <IfModule !mod_authz_core.c>
-            Order deny,allow
-            Deny from all
-        </IfModule>
-        # Apache 2.4 syntax
-        <IfModule mod_authz_core.c>
-            Require all denied
-        </IfModule>
-    </FilesMatch>
-
-    # jagain Direct Access ke Protected Folders
-    RewriteRule ^(app|bootstrap|config|database|overrides|resources|routes|storage|tests)/(.*) / [L,R=301]
-
-    # jagain Direct Access To modules/vendor Folders Except Assets
-    RewriteRule ^(modules|vendor)/(.*)\.((?!ico|gif|jpg|jpeg|png|js|css|less|sass|font|woff|woff2|eot|ttf|svg).)*$ / [L,R=301]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
@@ -39,10 +14,16 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_URI} !(\.css|\.js|\.png|\.jpg|\.eot|\.svg|\.ttf|\.woff|\.icons|\.icomoon|\.gif|robots\.txt)$ [NC]
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(css|js|images|icons|icomoon|fonts)/(.*)$ public/$1/$2 [L,NC]
 
 </IfModule>
 <FilesMatch ".env">
@@ -50,7 +31,3 @@
     Deny from all
 </FilesMatch>
 
-<FilesMatch "deeper.log">
-    Order allow,deny
-    Deny from all
-</FilesMatch>
