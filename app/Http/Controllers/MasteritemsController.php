@@ -55,9 +55,9 @@ class MasteritemsController extends Controller
                         $data->qty = $qty;
                     }
 
-                        $item[$i]->tersisa = $qty - Req::where('ADMIN_STATUS','like','%Approve%')->where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
-                        $item[$i]->terpakai = Req::where('ADMIN_STATUS','like','%Approve%')->where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
-                        $item[$i]->total = $qty;
+                    $item[$i]->tersisa = $qty - Req::where('ADMIN_STATUS','like','%Approve%')->where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
+                    $item[$i]->terpakai = Req::where('ADMIN_STATUS','like','%Approve%')->where('product_name', $item[$i]->product_name)->where('wh_code',$stock[$j]->wh_code)->count();
+                    $item[$i]->total = $qty;
                     
             }
         }
@@ -121,8 +121,6 @@ class MasteritemsController extends Controller
         
         return $itemMaster;
     }
-
-    
 
 }
 

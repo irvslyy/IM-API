@@ -21,7 +21,7 @@ Route::post('/login/user/', 'AuthController@login');
 Route::post('/register/user','AuthController@register');
 
 
-// Route::middleware('auth:api')->group(function () { 
+Route::middleware('auth:api')->group(function () { 
     
         // API LOGIN DENGAN HIRARKY && API USER GET GRF DAN REQUEST
         Route::get('/heirarky/{id}', 'HeirarkyController@ApiHeirarky');
@@ -94,5 +94,4 @@ Route::post('/register/user','AuthController@register');
 
         Route::get('/survey/{id_user}','AbsenController@surveyScore')->name('api.surveyScore.by.id');
         Route::post('/survey/peruser/{id_user}','AbsenController@surveyPost')->name('api.survey.post');
-// });
-
+});
