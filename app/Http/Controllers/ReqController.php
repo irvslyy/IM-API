@@ -13,6 +13,7 @@ use App\History;
 use DB;
 use Str;
 use Webpatser\Uuid\Uuid;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\Request;
 
@@ -67,7 +68,9 @@ class ReqController extends Controller
     */
     public function store(Request $req)
     {
-        $Items  = Items::all();
+        $Items = Cache::remember('items', 3, function (){
+            return Item::itemsData()->get();
+        });
 
         for ($i=0; $i < Count($Items); $i++) { 
             $requ  = new Req;
@@ -115,7 +118,10 @@ class ReqController extends Controller
     */
     public function apiUpdateSPVSTATUS(Request $request,$code)
     {
-        $goodrequest = Goodreq::all();
+        $goodrequest = Cache::remember('goodrequest', 3, function (){
+            Goodreq::goodRequestData()->get();
+        });
+
         for ($i=0; $i < count($goodrequest); $i++) { 
             $requester = Req::where('request_code',$code)->update(['SPV_STATUS' => $request->SPV_STATUS]);
             $goodrequest = Goodreq::where('grf_number',$code)->update(['SPV_STATUS' => $request->SPV_STATUS]);
@@ -135,7 +141,10 @@ class ReqController extends Controller
 
     public function apiUpdateMNGSTATUS(Request $request,$code)
     {
-        $goodrequest = Goodreq::all();
+        $goodrequest = Cache::remember('goodrequest', 3, function (){
+            return Goodreq::goodRequestData()->get();
+        });
+        
         for ($i=0; $i < count($goodrequest); $i++) { 
             $requester = Req::where('request_code',$code)->update(['MNG_STATUS' => $request->MNG_STATUS]);
             $goodrequest = Goodreq::where('grf_number',$code)->update(['MNG_STATUS' => $request->MNG_STATUS]);
@@ -179,7 +188,11 @@ class ReqController extends Controller
 
     public function mngStatusReq()
     {
-        $requester = History::where('MNG_STATUS','like','%Approve%')->get();
+        $requester = Cache::remember('mng-status' , 3,function(){
+            return History::HistoryApprove()->get();
+        });
+
+
         return response()->json([
             'status' => 200,
             'data' => $requester

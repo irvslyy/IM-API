@@ -14,4 +14,8 @@ class History extends Model
         return $this->hasMany('App\Req');
     }
 
+    public function scopeHistoryApprove($query)
+    {
+        $query->where('MNG_STATUS','LIKE','%Approve%');
+    }
 }

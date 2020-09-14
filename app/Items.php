@@ -35,4 +35,8 @@ class Items extends Model
           return $this->hasMany('App\Goodreq','id');
      }
 
+     public function scopeitemsData($query)
+     {
+          $query->where('product_name','!=',NULL);    
+     }
 }

@@ -33,4 +33,10 @@ class Goodreq extends Model
     {
         return $this->hasOne('App\History','grf_id');
     }
+
+    public function scopegoodRequestData($query)
+    {
+        $query->where('grf_number','!=',NULL);
+    }
+
 }
